@@ -1,0 +1,3410 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>TAX REFUND AND CURRENCY CONVERTER</title>
+  <style>
+    /* ==========================================================================
+       1. DESIGN TOKENS, THEME VARIABLES & CUSTOM BACKGROUND SUPPORT
+       ========================================================================== */
+    :root {
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --bg-base: #f8fafc;
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-border: rgba(15, 23, 42, 0.1);
+      --card-shadow: 0 22px 50px rgba(15, 23, 42, 0.12), 0 4px 14px rgba(15, 23, 42, 0.06);
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --surface-box: rgba(241, 245, 249, 0.9);
+      --surface-box-border: rgba(15, 23, 42, 0.09);
+      --surface-refund: rgba(79, 70, 229, 0.08);
+      --surface-refund-border: rgba(79, 70, 229, 0.24);
+      --surface-tile: rgba(255, 255, 255, 0.86);
+      --surface-tile-hover: rgba(255, 255, 255, 0.98);
+      --surface-tile-border: rgba(15, 23, 42, 0.09);
+      --surface-tile-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+      --input-bg: rgba(255, 255, 255, 0.96);
+      --input-border: rgba(15, 23, 42, 0.14);
+      --accent: #4f46e5;
+      --accent-soft: rgba(79, 70, 229, 0.14);
+      --success: #059669;
+      --danger: #dc2626;
+      --danger-soft: rgba(220, 38, 38, 0.14);
+      --calc-grad: linear-gradient(135deg, #4f46e5 0%, #6366f1 55%, #0ea5e9 100%);
+      --calc-shadow: 0 7px 18px rgba(79, 70, 229, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      --calc-shadow-hover: 0 10px 22px rgba(79, 70, 229, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+      --numpad-well-bg: linear-gradient(180deg, rgba(226, 232, 240, 0.85) 0%, rgba(203, 213, 225, 0.78) 100%);
+      --numpad-well-shadow: inset 0 2px 6px rgba(15, 23, 42, 0.14), 0 1px 0 rgba(255, 255, 255, 0.7);
+      --key-face-grad: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+      --key-emboss-shadow:
+        0 4px 0 #cbd5e1,
+        0 6px 10px rgba(15, 23, 42, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      --key-emboss-hover:
+        0 5px 0 #94a3b8,
+        0 8px 14px rgba(15, 23, 42, 0.18),
+        inset 0 1px 0 #ffffff;
+      --key-emboss-pressed:
+        0 1px 0 #cbd5e1,
+        0 2px 4px rgba(15, 23, 42, 0.16),
+        inset 0 2px 4px rgba(15, 23, 42, 0.14);
+      --key-text-emboss: 0 1px 0 rgba(255, 255, 255, 0.9);
+      --key-action-grad: linear-gradient(180deg, #eef2ff 0%, #e0e7ff 100%);
+      --key-action-shadow:
+        0 4px 0 #a5b4fc,
+        0 6px 10px rgba(79, 70, 229, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      --key-action-pressed:
+        0 1px 0 #a5b4fc,
+        0 2px 4px rgba(79, 70, 229, 0.18),
+        inset 0 2px 4px rgba(79, 70, 229, 0.16);
+      --key-clear-grad: linear-gradient(180deg, #fef2f2 0%, #fee2e2 100%);
+      --key-clear-shadow:
+        0 4px 0 #fca5a5,
+        0 6px 10px rgba(220, 38, 38, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      --key-clear-pressed:
+        0 1px 0 #fca5a5,
+        0 2px 4px rgba(220, 38, 38, 0.18),
+        inset 0 2px 4px rgba(220, 38, 38, 0.16);
+      --overlay-bg: rgba(255, 255, 255, 0.95);
+      --scrim-bg: rgba(2, 6, 23, 0.52);
+      --radius-card: 26px;
+      --radius-box: 12px;
+      --radius-pill: 9999px;
+      --custom-bg-image: none;
+    }
+
+    body.has-bg,
+    #appShell.has-bg,
+    #appCard.has-bg {
+      --card-bg: rgba(15, 23, 42, 0.74);
+      --card-border: rgba(255, 255, 255, 0.18);
+      --card-shadow: 0 24px 60px rgba(2, 6, 23, 0.55);
+      --text-primary: #f8fafc;
+      --text-secondary: #e2e8f0;
+      --text-muted: #cbd5e1;
+      --surface-box: rgba(15, 23, 42, 0.74);
+      --surface-box-border: rgba(255, 255, 255, 0.16);
+      --surface-refund: rgba(79, 70, 229, 0.34);
+      --surface-refund-border: rgba(165, 180, 252, 0.38);
+      --surface-tile: rgba(15, 23, 42, 0.74);
+      --surface-tile-hover: rgba(30, 41, 59, 0.88);
+      --surface-tile-border: rgba(255, 255, 255, 0.14);
+      --surface-tile-shadow: 0 2px 6px rgba(2, 6, 23, 0.25);
+      --input-bg: rgba(15, 23, 42, 0.82);
+      --input-border: rgba(255, 255, 255, 0.2);
+      --accent: #818cf8;
+      --accent-soft: rgba(129, 140, 248, 0.24);
+      --success: #34d399;
+      --danger: #f87171;
+      --danger-soft: rgba(248, 113, 113, 0.22);
+      --numpad-well-bg: rgba(15, 23, 42, 0.74);
+      --numpad-well-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.45), 0 1px 0 rgba(255, 255, 255, 0.1);
+      --key-face-grad: linear-gradient(180deg, rgba(51, 65, 85, 0.96) 0%, rgba(30, 41, 59, 0.98) 100%);
+      --key-emboss-shadow:
+        0 4px 0 #090d16,
+        0 6px 12px rgba(0, 0, 0, 0.48),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+      --key-emboss-hover:
+        0 5px 0 #020617,
+        0 8px 16px rgba(0, 0, 0, 0.56),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      --key-emboss-pressed:
+        0 1px 0 #090d16,
+        0 2px 4px rgba(0, 0, 0, 0.45),
+        inset 0 2px 5px rgba(0, 0, 0, 0.55);
+      --key-text-emboss: 0 1px 1px rgba(0, 0, 0, 0.7);
+      --key-action-grad: linear-gradient(180deg, rgba(67, 56, 202, 0.9) 0%, rgba(49, 46, 129, 0.95) 100%);
+      --key-action-shadow:
+        0 4px 0 #1e1b4b,
+        0 6px 12px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(199, 210, 254, 0.32);
+      --key-action-pressed:
+        0 1px 0 #1e1b4b,
+        0 2px 4px rgba(0, 0, 0, 0.45),
+        inset 0 2px 5px rgba(0, 0, 0, 0.5);
+      --key-clear-grad: linear-gradient(180deg, rgba(153, 27, 27, 0.9) 0%, rgba(127, 29, 29, 0.95) 100%);
+      --key-clear-shadow:
+        0 4px 0 #450a0a,
+        0 6px 12px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(254, 202, 202, 0.3);
+      --key-clear-pressed:
+        0 1px 0 #450a0a,
+        0 2px 4px rgba(0, 0, 0, 0.45),
+        inset 0 2px 5px rgba(0, 0, 0, 0.5);
+      --overlay-bg: rgba(15, 23, 42, 0.92);
+    }
+
+    /* ==========================================================================
+       2. STRICT SINGLE-VIEWPORT FIT (100dvh, overflow: hidden, #f8fafc)
+       ========================================================================== */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body,
+    #appShell {
+      width: 100%;
+      height: 100dvh;
+      min-height: 100dvh;
+      max-height: 100dvh;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      background: #f8fafc;
+      font-family: var(--font-sans);
+      color: var(--text-primary);
+      position: relative;
+    }
+
+    #appShell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f8fafc;
+      background-image: var(--custom-bg-image);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    #appShell.has-bg::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.36);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #appCard {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 430px;
+      height: min(860px, calc(100dvh - 24px));
+      max-height: calc(100dvh - 24px);
+      border-radius: 26px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+      overflow: hidden;
+      background-color: var(--card-bg);
+      background-image: var(--custom-bg-image);
+      background-size: cover;
+      background-position: center;
+      border: 1px solid var(--card-border);
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    #appCard.has-bg,
+    body.has-bg #appCard,
+    #appShell.has-bg #appCard {
+      background-color: rgba(15, 23, 42, 0.74);
+      backdrop-filter: blur(18px) saturate(155%);
+      -webkit-backdrop-filter: blur(18px) saturate(155%);
+    }
+
+    #appCard.has-bg .input-box,
+    #appCard.has-bg .refund-box,
+    #appCard.has-bg .calc-metric-box,
+    #appCard.has-bg .currency-tile,
+    #appCard.has-bg #numpad,
+    #appCard.has-bg .icon-btn {
+      background-color: rgba(15, 23, 42, 0.74);
+      backdrop-filter: blur(18px) saturate(155%);
+      -webkit-backdrop-filter: blur(18px) saturate(155%);
+    }
+
+    @media (max-width: 600px) {
+      #appCard {
+        width: 100%;
+        max-width: 100%;
+        height: 100dvh;
+        max-height: 100dvh;
+        border-radius: 0;
+        border: none;
+        padding: calc(10px + env(safe-area-inset-top, 0px)) calc(12px + env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) calc(12px + env(safe-area-inset-left, 0px));
+        gap: 7px;
+        overflow: hidden;
+      }
+    }
+
+    /* ==========================================================================
+       3. HEADER, VALUE INPUT (#valueInput) & TAX REFUND BOX
+       ========================================================================== */
+    .app-header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 6px;
+      flex: 0 0 auto;
+      min-height: 26px;
+    }
+
+    .live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 7px;
+      border-radius: var(--radius-pill);
+      font-size: 0.60rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      background: rgba(16, 185, 129, 0.14);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.28);
+      white-space: nowrap;
+    }
+
+    .live-pill.is-syncing {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+
+    .live-pill.is-fallback {
+      background: rgba(245, 158, 11, 0.16);
+      color: #d97706;
+      border-color: rgba(245, 158, 11, 0.32);
+    }
+
+    .has-bg .live-pill.is-fallback {
+      color: #fbbf24;
+    }
+
+    .live-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .app-title {
+      font-size: clamp(0.68rem, 2.35vw, 0.80rem);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-align: center;
+      color: var(--text-primary);
+      line-height: 1.15;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .icon-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      border: 1px solid var(--surface-box-border);
+      background: var(--surface-box);
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.12s ease, background-color 0.15s ease;
+    }
+
+    .icon-btn:hover {
+      background: var(--surface-tile-hover);
+    }
+
+    .icon-btn:active {
+      transform: scale(0.95);
+    }
+
+    .top-summary-row {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 6px;
+      flex: 0 0 auto;
+    }
+
+    .input-box,
+    .refund-box {
+      border-radius: var(--radius-box);
+      padding: 5px 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-width: 0;
+    }
+
+    .input-box {
+      background: var(--surface-box);
+      border: 1px solid var(--surface-box-border);
+    }
+
+    .refund-box {
+      background: var(--surface-refund);
+      border: 1px solid var(--surface-refund-border);
+    }
+
+    .box-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      margin-bottom: 1px;
+    }
+
+    .box-label {
+      font-size: 0.60rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .box-unit {
+      font-size: 0.58rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    #valueInput {
+      width: 100%;
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
+      background: var(--input-bg);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: clamp(0.96rem, 3.3vw, 1.16rem);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      padding: 1px 6px;
+      text-align: right;
+      outline: none;
+      caret-color: transparent;
+      user-select: none;
+    }
+
+    .refund-value {
+      font-size: clamp(0.94rem, 3.1vw, 1.12rem);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: var(--accent);
+      text-align: right;
+      line-height: 1.15;
+      padding: 1px 2px 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .refund-sub {
+      font-size: 0.55rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: right;
+      line-height: 1.05;
+    }
+
+    /* ==========================================================================
+       4. 16-COUNTRY INITIALS-ONLY CURRENCY GRID (8 ROWS x 2 COLS, ~10% SCALED)
+       ========================================================================== */
+    .currency-section {
+      flex: 0 0 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .currency-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(8, 23px);
+      gap: 3px;
+      width: 100%;
+    }
+
+    .currency-tile {
+      border-radius: 7px;
+      padding: 1.5px 6.5px;
+      background: var(--surface-tile);
+      border: 1px solid var(--surface-tile-border);
+      box-shadow: var(--surface-tile-shadow);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .currency-tile:hover {
+      background: var(--surface-tile-hover);
+      border-color: rgba(99, 102, 241, 0.36);
+    }
+
+    .tile-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 4.5px;
+      min-width: 0;
+      flex-shrink: 0;
+    }
+
+    .flag-svg {
+      width: 16.5px;
+      height: 11px;
+      border-radius: 2px;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.16);
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .tile-country {
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      color: var(--text-primary);
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .tile-code {
+      font-size: 0.59rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .tile-value {
+      font-family: var(--font-sans);
+      font-size: 0.77rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-primary);
+      line-height: 1.05;
+      text-align: end;
+      min-width: 0;
+      flex: 1 1 auto;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tile-value.is-wide-num {
+      font-size: 0.67rem;
+      letter-spacing: -0.02em;
+    }
+
+    @media (max-width: 600px) {
+      .currency-grid {
+        grid-template-rows: repeat(8, 20px);
+        gap: 2.5px;
+      }
+
+      .currency-tile {
+        border-radius: 6px;
+        padding: 1px 6px;
+        gap: 3.5px;
+      }
+
+      .flag-svg {
+        width: 15.5px;
+        height: 10px;
+      }
+
+      .tile-country {
+        font-size: 0.70rem;
+      }
+
+      .tile-code {
+        font-size: 0.56rem;
+      }
+
+      .tile-value {
+        font-size: 0.72rem;
+      }
+
+      .tile-value.is-wide-num {
+        font-size: 0.64rem;
+      }
+    }
+
+    /* ==========================================================================
+       5. ELONGATED CALCULATOR BAR (.calc-bar & #openCalcBtn)
+       ========================================================================== */
+    .calc-bar {
+      width: 100%;
+      flex: 0 0 auto;
+      display: flex;
+      align-items: stretch;
+    }
+
+    #openCalcBtn {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      min-height: 27px;
+      height: 27px;
+      padding: 2px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      background: var(--calc-grad);
+      box-shadow: var(--calc-shadow);
+      color: #ffffff;
+      font-family: var(--font-sans);
+      font-size: clamp(0.68rem, 2.1vw, 0.76rem);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+      touch-action: manipulation;
+      transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.15s ease;
+    }
+
+    @media (max-width: 600px) {
+      #openCalcBtn {
+        min-height: 25px;
+        height: 25px;
+      }
+    }
+
+    #openCalcBtn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0) 58%);
+      pointer-events: none;
+    }
+
+    #openCalcBtn:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--calc-shadow-hover);
+      filter: brightness(1.04);
+    }
+
+    #openCalcBtn:active {
+      transform: translateY(1px) scale(0.992);
+    }
+
+    .calc-btn-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .calc-btn-label {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .calc-btn-ops {
+      font-size: 0.60rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      padding: 1px 6px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       5B. ESAAD / FAZAA & 2x2 INSTALLMENT GRID (NO FORMULAS ON 3/6/9/12 MNTH)
+       ========================================================================== */
+    .calc-metrics-stack {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5px;
+    }
+
+    .calc-metric-box {
+      flex: 0 0 auto;
+      border-radius: 8px;
+      padding: 1.5px 8px;
+      background: var(--surface-box);
+      border: 1px solid var(--surface-box-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 20px;
+      height: 20px;
+    }
+
+    .calc-metric-label-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .calc-metric-label {
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .calc-metric-tag {
+      font-size: 0.52rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .calc-metric-value-wrap {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 3.5px;
+      flex-shrink: 0;
+    }
+
+    .calc-metric-value {
+      font-size: 0.72rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-primary);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .calc-metric-unit {
+      font-size: 0.54rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 600px) {
+      .calc-metrics-stack {
+        gap: 2px;
+      }
+
+      .calc-metric-box {
+        padding: 1px 7px;
+        min-height: 18px;
+        height: 18px;
+        border-radius: 7px;
+      }
+
+      .calc-metric-label {
+        font-size: 0.59rem;
+      }
+
+      .calc-metric-value {
+        font-size: 0.69rem;
+      }
+    }
+
+    .installment-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(3, 18px);
+      gap: 2px;
+      width: 100%;
+    }
+
+    .installment-grid .calc-metric-box {
+      min-height: 18px;
+      height: 18px;
+      padding: 1px 6.5px;
+      gap: 4px;
+    }
+
+    .installment-grid .calc-metric-label {
+      font-size: 0.58rem;
+    }
+
+    .installment-grid .calc-metric-value {
+      font-size: 0.67rem;
+    }
+
+    .installment-grid .calc-metric-unit {
+      font-size: 0.49rem;
+    }
+
+    @media (max-width: 600px) {
+      .installment-grid {
+        grid-template-rows: repeat(3, 16px);
+        gap: 1.5px;
+      }
+
+      .installment-grid .calc-metric-box {
+        min-height: 16px;
+        height: 16px;
+        padding: 0.5px 6px;
+        border-radius: 6px;
+      }
+
+      .installment-grid .calc-metric-label {
+        font-size: 0.56rem;
+      }
+
+      .installment-grid .calc-metric-value {
+        font-size: 0.64rem;
+      }
+    }
+
+    /* ==========================================================================
+       6. 3D EMBOSSED PERMANENT NUMPAD (#numpad & .numpad-key)
+       ========================================================================== */
+    #numpad {
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 96%;
+      max-width: 390px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      padding: 4.5px;
+      border-radius: 14px;
+      background: var(--numpad-well-bg);
+      border: 1px solid var(--input-border);
+      box-shadow: var(--numpad-well-shadow);
+    }
+
+    .numpad-grid {
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: repeat(4, minmax(21px, 1fr)) minmax(19px, 0.85fr);
+      gap: 3.5px;
+    }
+
+    @media (max-width: 600px) {
+      #numpad {
+        width: 96%;
+        max-width: none;
+        padding: 4px;
+        border-radius: 12px;
+      }
+
+      .numpad-grid {
+        grid-template-rows: repeat(4, minmax(19px, 1fr)) minmax(17px, 0.85fr);
+        gap: 3px;
+      }
+    }
+
+    /* ==========================================================================
+       6. 3D EMBOSSED PERMANENT NUMPAD (#numpad & .numpad-key)
+       ========================================================================== */
+    #numpad {
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 96%;
+      max-width: 390px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      padding: 5px;
+      border-radius: 14px;
+      background: var(--numpad-well-bg);
+      border: 1px solid var(--input-border);
+      box-shadow: var(--numpad-well-shadow);
+    }
+
+    .numpad-grid {
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: repeat(4, minmax(24px, 1fr)) minmax(22px, 0.85fr);
+      gap: 4px;
+    }
+
+    @media (max-width: 600px) {
+      #numpad {
+        width: 96%;
+        max-width: none;
+        padding: 4.5px;
+        border-radius: 12px;
+      }
+
+      .numpad-grid {
+        grid-template-rows: repeat(4, minmax(22px, 1fr)) minmax(20px, 0.85fr);
+        gap: 3.5px;
+      }
+    }
+
+    .numpad-key {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      padding: 0 6px;
+      border-radius: 9px;
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      background: var(--key-face-grad);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: clamp(0.86rem, 3.1vw, 1.02rem);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      text-shadow: var(--key-text-emboss);
+      box-shadow: var(--key-emboss-shadow);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      touch-action: manipulation;
+      transition: transform 0.08s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.12s ease, border-color 0.12s ease, filter 0.12s ease;
+    }
+
+    @media (max-width: 600px) {
+      .numpad-key {
+        border-radius: 8px;
+        font-size: clamp(0.82rem, 2.9vw, 0.96rem);
+      }
+    }
+
+    .has-bg .numpad-key {
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .numpad-key::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 46%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 100%);
+      pointer-events: none;
+    }
+
+    .has-bg .numpad-key::before {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    .numpad-key:hover {
+      transform: translateY(-1px);
+      border-color: rgba(79, 70, 229, 0.48);
+      box-shadow: var(--key-emboss-hover);
+    }
+
+    .has-bg .numpad-key:hover {
+      border-color: rgba(165, 180, 252, 0.45);
+    }
+
+    .numpad-key:active,
+    .numpad-key.is-pressed {
+      transform: translateY(2px) scale(0.985);
+      box-shadow: var(--key-emboss-pressed);
+      filter: brightness(0.97);
+    }
+
+    .numpad-key:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .numpad-key.is-action {
+      background: var(--key-action-grad);
+      border-color: rgba(129, 140, 248, 0.55);
+      color: var(--accent);
+      box-shadow: var(--key-action-shadow);
+    }
+
+    .has-bg .numpad-key.is-action {
+      color: #e0e7ff;
+      border-color: rgba(165, 180, 252, 0.34);
+    }
+
+    .numpad-key.is-action:active,
+    .numpad-key.is-action.is-pressed {
+      transform: translateY(2px) scale(0.985);
+      box-shadow: var(--key-action-pressed);
+    }
+
+    .numpad-key.is-clear {
+      grid-column: 1 / -1;
+      background: var(--key-clear-grad);
+      border-color: rgba(248, 113, 113, 0.55);
+      color: var(--danger);
+      box-shadow: var(--key-clear-shadow);
+      font-size: clamp(0.76rem, 2.5vw, 0.86rem);
+      letter-spacing: 0.05em;
+    }
+
+    .has-bg .numpad-key.is-clear {
+      color: #fee2e2;
+      border-color: rgba(252, 165, 165, 0.35);
+    }
+
+    .numpad-key.is-clear:active,
+    .numpad-key.is-clear.is-pressed {
+      transform: translateY(2px) scale(0.985);
+      box-shadow: var(--key-clear-pressed);
+    }
+
+    /* ==========================================================================
+       7. STANDALONE POP-UP CALCULATOR (#calcBackdrop & #calcPanel)
+       ========================================================================== */
+    .overlay-backdrop {
+      position: fixed;
+      inset: 0;
+      background: var(--scrim-bg);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .overlay-backdrop.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #settingsBackdrop {
+      z-index: 50;
+    }
+
+    #calcBackdrop {
+      z-index: 55;
+    }
+
+    #calcPanel {
+      position: fixed;
+      z-index: 65;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -46%) scale(0.96);
+      width: min(94vw, 380px);
+      max-height: 90dvh;
+      overflow-y: auto;
+      border-radius: 22px;
+      padding: 15px;
+      background: var(--overlay-bg);
+      color: var(--text-primary);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 28px 70px rgba(2, 6, 23, 0.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    #calcPanel.is-open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .modal-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .close-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      border: 1px solid var(--surface-tile-border);
+      background: var(--surface-tile);
+      color: var(--text-primary);
+      font-size: 0.96rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .calc-screen {
+      border-radius: 14px;
+      padding: 9px 12px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+    }
+
+    .calc-expr {
+      min-height: 16px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+      word-break: break-all;
+    }
+
+    .calc-display {
+      width: 100%;
+      font-size: 1.48rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-primary);
+      text-align: right;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .calc-display.is-error {
+      color: var(--danger);
+    }
+
+    .calc-keys {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .calc-key {
+      min-height: 42px;
+      border-radius: 11px;
+      border: 1px solid var(--surface-tile-border);
+      background: var(--surface-tile);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.1s ease, background-color 0.14s ease;
+    }
+
+    .calc-key:active {
+      transform: scale(0.96);
+    }
+
+    .calc-key.is-op {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: rgba(99, 102, 241, 0.35);
+    }
+
+    .calc-key.is-eq {
+      background: var(--calc-grad);
+      color: #ffffff;
+      border: none;
+    }
+
+    .calc-key.is-clear-key {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border-color: rgba(239, 68, 68, 0.35);
+    }
+
+    .calc-footer-actions {
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .btn-primary {
+      min-height: 38px;
+      padding: 7px 12px;
+      border-radius: 11px;
+      border: none;
+      background: var(--calc-grad);
+      color: #ffffff;
+      font-family: var(--font-sans);
+      font-size: 0.84rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-secondary {
+      min-height: 38px;
+      padding: 7px 10px;
+      border-radius: 11px;
+      border: 1px solid var(--surface-tile-border);
+      background: var(--surface-tile);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ==========================================================================
+       8. FLOATING SETTINGS OVERLAY (#settingsBackdrop & #settingsPanel)
+       ========================================================================== */
+    #settingsPanel {
+      position: fixed;
+      z-index: 60;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -46%) scale(0.96);
+      width: min(94vw, 460px);
+      max-height: 88dvh;
+      overflow-y: auto;
+      border-radius: 22px;
+      padding: 16px;
+      background: var(--overlay-bg);
+      color: var(--text-primary);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 28px 70px rgba(2, 6, 23, 0.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    #settingsPanel.is-open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .settings-section {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      padding: 11px;
+      border-radius: 14px;
+      background: var(--surface-tile);
+      border: 1px solid var(--surface-tile-border);
+    }
+
+    .settings-label {
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .settings-help {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .lang-select {
+      width: 100%;
+      min-height: 36px;
+      padding: 6px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .bg-stage-preview {
+      width: 100%;
+      height: 84px;
+      border-radius: 10px;
+      border: 1px dashed var(--input-border);
+      background-color: rgba(148, 163, 184, 0.12);
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      overflow: hidden;
+    }
+
+    .bg-actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .bg-actions-row > button,
+    .bg-actions-row > label {
+      flex: 1 1 auto;
+      min-height: 34px;
+      padding: 5px 9px;
+      border-radius: 10px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .rates-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.72rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .rates-table th,
+    .rates-table td {
+      padding: 4px 6px;
+      border-bottom: 1px solid var(--surface-tile-border);
+      text-align: left;
+    }
+
+    html[dir="rtl"] .rates-table th,
+    html[dir="rtl"] .rates-table td {
+      text-align: right;
+    }
+
+    .rates-table th {
+      font-weight: 800;
+      color: var(--text-secondary);
+    }
+
+    .log-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      max-height: 140px;
+      overflow-y: auto;
+    }
+
+    .log-item {
+      padding: 6px 8px;
+      border-radius: 9px;
+      background: var(--input-bg);
+      border: 1px solid var(--surface-tile-border);
+      font-size: 0.70rem;
+      font-variant-numeric: tabular-nums;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .log-item-top {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 800;
+    }
+
+    .log-item-sub {
+      color: var(--text-muted);
+      font-size: 0.64rem;
+    }
+
+    .status-toast {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      min-height: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div id="appShell">
+    <main id="appCard" role="main" aria-label="Tax Refund and Currency Converter">
+      <!-- Top Bar with Live Status, Centered Title & Settings Button -->
+      <header class="app-header">
+        <div id="rateStatusPill" class="live-pill" title="Live AED Rate Status">
+          <span class="live-dot" aria-hidden="true"></span>
+          <span id="rateStatusText">LIVE · 5s</span>
+        </div>
+        <h1 id="appTitle" class="app-title">TAX REFUND AND CURRENCY CONVERTER</h1>
+        <div class="header-actions">
+          <button type="button" id="openSettingsBtn" class="icon-btn" aria-label="Settings" title="Settings">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l-.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Read-Only AED Value Input & Tax Refund Output -->
+      <section class="top-summary-row" aria-label="AED Input and Tax Refund">
+        <div class="input-box">
+          <div class="box-label-row">
+            <label id="aedInputLabel" for="valueInput" class="box-label">VALUE (AED)</label>
+            <span class="box-unit">AED</span>
+          </div>
+          <input
+            id="valueInput"
+            type="text"
+            value="0.00"
+            readonly
+            inputmode="none"
+            autocomplete="off"
+            aria-label="Value in AED"
+          />
+        </div>
+
+        <div class="refund-box">
+          <div class="box-label-row">
+            <span id="refundLabel" class="box-label">TAX REFUND</span>
+            <span class="box-unit">AED</span>
+          </div>
+          <div id="taxRefundValue" class="refund-value">0.00</div>
+          <div id="refundFormulaNote" class="refund-sub">AED × 5% × 81%</div>
+        </div>
+      </section>
+
+      <!-- 16-Country Initials-Only Currency Grid -->
+      <section class="currency-section" aria-label="Converted Currencies">
+        <div id="currencyGrid" class="currency-grid"></div>
+      </section>
+
+      <!-- Elongated Calculator Bar between 16-Country Grid and Esaad / Fazaa Box -->
+      <div class="calc-bar">
+        <button type="button" id="openCalcBtn" aria-haspopup="dialog" aria-controls="calcPanel">
+          <span class="calc-btn-left">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="4" y="2" width="16" height="20" rx="2.5"></rect>
+              <line x1="8" y1="6" x2="16" y2="6"></line>
+              <line x1="8" y1="10" x2="8" y2="10.01"></line>
+              <line x1="12" y1="10" x2="12" y2="10.01"></line>
+              <line x1="16" y1="10" x2="16" y2="10.01"></line>
+              <line x1="8" y1="14" x2="8" y2="14.01"></line>
+              <line x1="12" y1="14" x2="12" y2="14.01"></line>
+              <line x1="16" y1="14" x2="16" y2="14.01"></line>
+              <line x1="8" y1="18" x2="8" y2="18.01"></line>
+              <line x1="12" y1="18" x2="12" y2="18.01"></line>
+              <line x1="16" y1="18" x2="16" y2="18.01"></line>
+            </svg>
+            <span id="openCalcLabel" class="calc-btn-label">CALCULATOR</span>
+          </span>
+          <span class="calc-btn-ops" aria-hidden="true">+ − × ÷ %</span>
+        </button>
+      </div>
+
+      <!-- Esaad / Fazaa & 2x2 Installment Grid (No Formulas Shown on 3/6/9/12 mnth) -->
+      <section class="calc-metrics-stack" aria-label="Esaad / Fazaa and Monthly Breakdowns">
+        <div class="calc-metric-box" aria-label="Esaad / Fazaa">
+          <div class="calc-metric-label-wrap">
+            <span id="esaadLabel" class="calc-metric-label">Esaad / Fazaa</span>
+            <span class="calc-metric-tag">−0.95%</span>
+          </div>
+          <div class="calc-metric-value-wrap">
+            <span id="esaadFazaaValue" class="calc-metric-value">0.00</span>
+            <span class="calc-metric-unit">AED</span>
+          </div>
+        </div>
+
+        <div class="installment-grid" aria-label="3, 6, 9, and 12 Month Breakdowns">
+          <div class="calc-metric-box" aria-label="3 mnth">
+            <div class="calc-metric-label-wrap">
+              <span id="threeMnthLabel" class="calc-metric-label">3 mnth</span>
+            </div>
+            <div class="calc-metric-value-wrap">
+              <span id="m3Value" class="calc-metric-value">0.00</span>
+              <span class="calc-metric-unit">AED</span>
+            </div>
+          </div>
+
+          <div class="calc-metric-box" aria-label="6 mnth">
+            <div class="calc-metric-label-wrap">
+              <span id="sixMnthLabel" class="calc-metric-label">6 mnth</span>
+            </div>
+            <div class="calc-metric-value-wrap">
+              <span id="m6Value" class="calc-metric-value">0.00</span>
+              <span class="calc-metric-unit">AED</span>
+            </div>
+          </div>
+
+          <div class="calc-metric-box" aria-label="9 mnth">
+            <div class="calc-metric-label-wrap">
+              <span id="nineMnthLabel" class="calc-metric-label">9 mnth</span>
+            </div>
+            <div class="calc-metric-value-wrap">
+              <span id="m9Value" class="calc-metric-value">0.00</span>
+              <span class="calc-metric-unit">AED</span>
+            </div>
+          </div>
+
+          <div class="calc-metric-box" aria-label="12 mnth">
+            <div class="calc-metric-label-wrap">
+              <span id="twelveMnthLabel" class="calc-metric-label">12 mnth</span>
+            </div>
+            <div class="calc-metric-value-wrap">
+              <span id="m12Value" class="calc-metric-value">0.00</span>
+              <span class="calc-metric-unit">AED</span>
+            </div>
+          </div>
+
+          <div class="calc-metric-box" aria-label="4 mnth">
+            <div class="calc-metric-label-wrap">
+              <span id="fourMnthLabel" class="calc-metric-label">4 mnth</span>
+            </div>
+            <div class="calc-metric-value-wrap">
+              <span id="m4Value" class="calc-metric-value">0.00</span>
+              <span class="calc-metric-unit">AED</span>
+            </div>
+          </div>
+
+          <div class="calc-metric-box" aria-label="8 mnth">
+            <div class="calc-metric-label-wrap">
+              <span id="eightMnthLabel" class="calc-metric-label">8 mnth</span>
+            </div>
+            <div class="calc-metric-value-wrap">
+              <span id="m8Value" class="calc-metric-value">0.00</span>
+              <span class="calc-metric-unit">AED</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3D Embossed Permanent Numpad (5 rows x 3 columns) -->
+      <section id="numpad" aria-label="AED Numeric Keypad">
+        <div id="numpadGrid" class="numpad-grid">
+          <button type="button" class="numpad-key" data-digit="7">7</button>
+          <button type="button" class="numpad-key" data-digit="8">8</button>
+          <button type="button" class="numpad-key" data-digit="9">9</button>
+
+          <button type="button" class="numpad-key" data-digit="4">4</button>
+          <button type="button" class="numpad-key" data-digit="5">5</button>
+          <button type="button" class="numpad-key" data-digit="6">6</button>
+
+          <button type="button" class="numpad-key" data-digit="1">1</button>
+          <button type="button" class="numpad-key" data-digit="2">2</button>
+          <button type="button" class="numpad-key" data-digit="3">3</button>
+
+          <button type="button" class="numpad-key" data-decimal=".">.</button>
+          <button type="button" class="numpad-key" data-digit="0">0</button>
+          <button type="button" class="numpad-key is-action" data-backspace="1" aria-label="Backspace">⌫</button>
+
+          <button type="button" class="numpad-key is-clear" data-clear="1" aria-label="Clear">C</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Backdrops & Overlays -->
+  <div id="settingsBackdrop" class="overlay-backdrop" aria-hidden="true"></div>
+  <div id="calcBackdrop" class="overlay-backdrop" aria-hidden="true"></div>
+
+  <!-- Standalone Pop-Up Arithmetic Calculator (#calcPanel) -->
+  <section id="calcPanel" role="dialog" aria-modal="true" aria-labelledby="calcModalTitle" tabindex="-1">
+    <div class="modal-head">
+      <h2 id="calcModalTitle" class="modal-title">CALCULATOR</h2>
+      <button type="button" id="closeCalcBtn" class="close-btn" aria-label="Close Calculator">✕</button>
+    </div>
+
+    <div class="calc-screen">
+      <div id="calcExpr" class="calc-expr"></div>
+      <div id="calcDisplay" class="calc-display">0</div>
+    </div>
+
+    <div id="calcKeys" class="calc-keys">
+      <button type="button" class="calc-key is-clear-key" data-calc-action="clear">C</button>
+      <button type="button" class="calc-key is-op" data-calc-action="ce">CE</button>
+      <button type="button" class="calc-key is-op" data-calc-action="backspace">⌫</button>
+      <button type="button" class="calc-key is-op" data-calc-op="/">÷</button>
+
+      <button type="button" class="calc-key" data-calc-digit="7">7</button>
+      <button type="button" class="calc-key" data-calc-digit="8">8</button>
+      <button type="button" class="calc-key" data-calc-digit="9">9</button>
+      <button type="button" class="calc-key is-op" data-calc-op="*">×</button>
+
+      <button type="button" class="calc-key" data-calc-digit="4">4</button>
+      <button type="button" class="calc-key" data-calc-digit="5">5</button>
+      <button type="button" class="calc-key" data-calc-digit="6">6</button>
+      <button type="button" class="calc-key is-op" data-calc-op="-">−</button>
+
+      <button type="button" class="calc-key" data-calc-digit="1">1</button>
+      <button type="button" class="calc-key" data-calc-digit="2">2</button>
+      <button type="button" class="calc-key" data-calc-digit="3">3</button>
+      <button type="button" class="calc-key is-op" data-calc-op="+">+</button>
+
+      <button type="button" class="calc-key" data-calc-digit="0">0</button>
+      <button type="button" class="calc-key" data-calc-decimal=".">.</button>
+      <button type="button" class="calc-key is-op" data-calc-action="percent">%</button>
+      <button type="button" class="calc-key is-eq" data-calc-action="equals">=</button>
+    </div>
+
+    <div class="calc-footer-actions">
+      <button type="button" id="applyCalcToAedBtn" class="btn-primary">Apply to AED</button>
+      <button type="button" id="closeCalcFooterBtn" class="btn-secondary">Close</button>
+    </div>
+  </section>
+
+  <!-- Floating Settings Overlay (#settingsPanel) -->
+  <section id="settingsPanel" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle" tabindex="-1">
+    <div class="modal-head">
+      <h2 id="settingsModalTitle" class="modal-title">SETTINGS</h2>
+      <button type="button" id="closeSettingsBtn" class="close-btn" aria-label="Close Settings">✕</button>
+    </div>
+
+    <!-- Language Selector (9 languages: en, ar, ur, fa, hi, tl, zh, ru, fr) -->
+    <div class="settings-section">
+      <label id="langLabel" for="langSelect" class="settings-label">LANGUAGE</label>
+      <select id="langSelect" class="lang-select">
+        <option value="en">English (EN)</option>
+        <option value="ar">العربية (AR)</option>
+        <option value="ur">اردو (UR)</option>
+        <option value="fa">فارسی (FA)</option>
+        <option value="hi">हिन्दी (HI)</option>
+        <option value="tl">Tagalog / Filipino (TL)</option>
+        <option value="zh">中文 (ZH)</option>
+        <option value="ru">Русский (RU)</option>
+        <option value="fr">Français (FR)</option>
+      </select>
+    </div>
+
+    <!-- Custom Background Image Staged Compression & Save/Remove/Cancel -->
+    <div class="settings-section">
+      <div id="bgSectionLabel" class="settings-label">BACKGROUND IMAGE</div>
+      <div id="bgStagePreview" class="bg-stage-preview">No custom background</div>
+      <div class="bg-actions-row">
+        <label id="chooseBgLabel" for="bgFileInput" class="btn-secondary">Choose Image</label>
+        <input id="bgFileInput" type="file" accept="image/*" style="display:none;" />
+        <button type="button" id="saveBgBtn" class="btn-primary">Save</button>
+        <button type="button" id="removeBgBtn" class="btn-secondary">Remove</button>
+        <button type="button" id="cancelBgBtn" class="btn-secondary">Cancel</button>
+      </div>
+      <div id="bgHelpText" class="settings-help">Compressed to max 1280px JPEG (0.82) before saving.</div>
+    </div>
+
+    <!-- Live AED Exchange Rate Table -->
+    <div class="settings-section">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+        <span id="ratesTableTitle" class="settings-label">LIVE AED RATES</span>
+        <button type="button" id="refreshRatesNowBtn" class="btn-secondary" style="min-height:30px;padding:4px 10px;font-size:0.72rem;">Refresh</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="rates-table">
+          <thead>
+            <tr>
+              <th>CCY</th>
+              <th>1 AED =</th>
+              <th>1 UNIT = AED</th>
+            </tr>
+          </thead>
+          <tbody id="ratesTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Inquiry Log & .XLS Export -->
+    <div class="settings-section">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+        <span id="inquiryLogTitle" class="settings-label">INQUIRY LOG</span>
+        <div style="display:flex;gap:6px;">
+          <button type="button" id="exportXlsBtn" class="btn-primary" style="min-height:30px;padding:4px 10px;font-size:0.72rem;">Export .XLS</button>
+          <button type="button" id="clearLogsBtn" class="btn-secondary" style="min-height:30px;padding:4px 10px;font-size:0.72rem;">Clear</button>
+        </div>
+      </div>
+      <div id="inquiryLogList" class="log-list"></div>
+    </div>
+
+    <div id="settingsStatus" class="status-toast" role="status" aria-live="polite"></div>
+  </section>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* ========================================================================
+         1. CONSTANTS, 16-COUNTRY DEFINITIONS & BASELINE RATES
+         ======================================================================== */
+      var STORAGE_KEYS = {
+        LANG: 'trcc_lang_v1',
+        BG: 'customBgImage',
+        LEGACY_BG: 'trcc_bg_image_v1',
+        RATES: 'trcc_rates_cache_v1',
+        LOGS: 'trcc_inquiry_logs_v1'
+      };
+
+      var MAX_INQUIRY_LOGS = 200;
+
+      // Tax Refund Formula: Value (AED) * 5% * 81%
+      var REFUND_MULTIPLIER = 0.05 * 0.81;
+
+      // Baseline rates (per 1 AED) for all 15 distinct currencies across 16 tiles
+      var BASELINE_RATES_PER_AED = {
+        PHP: 15.98,
+        USD: 0.272294,
+        EUR: 0.2512,
+        CNY: 1.9715,
+        JPY: 42.18,
+        KRW: 379.50,
+        INR: 23.02,
+        PKR: 75.72,
+        IRR: 11450.0,
+        RUB: 26.85,
+        TRY: 9.3845,
+        OMR: 0.10478,
+        SAR: 1.0211,
+        QAR: 0.99115,
+        BHD: 0.10242
+      };
+
+      // Sanity bounds (per 1 AED) to reject corrupted API responses
+      var RATE_SANITY_BOUNDS = {
+        PHP: [5, 120],
+        USD: [0.1, 1.0],
+        EUR: [0.1, 1.0],
+        CNY: [0.5, 20],
+        JPY: [10, 400],
+        KRW: [80, 2000],
+        INR: [5, 200],
+        PKR: [15, 600],
+        IRR: [2000, 5000000],
+        RUB: [5, 300],
+        TRY: [1, 200],
+        OMR: [0.02, 0.5],
+        SAR: [0.5, 2.5],
+        QAR: [0.5, 2.5],
+        BHD: [0.02, 0.5]
+      };
+
+      // Exact 16 country tiles in required order (initials-only labels)
+      var TILES_CONFIG = [
+        { id: 'PH', label: 'PH', code: 'PHP', rateKey: 'PHP', flag: 'PH' },
+        { id: 'US', label: 'US', code: 'USD', rateKey: 'USD', flag: 'US' },
+        { id: 'EU', label: 'EU', code: 'EUR', rateKey: 'EUR', flag: 'EU' },
+        { id: 'FR', label: 'FR', code: 'EUR', rateKey: 'EUR', flag: 'FR' },
+        { id: 'CN', label: 'CN', code: 'CNY', rateKey: 'CNY', flag: 'CN' },
+        { id: 'JP', label: 'JP', code: 'JPY', rateKey: 'JPY', flag: 'JP' },
+        { id: 'KR', label: 'KR', code: 'KRW', rateKey: 'KRW', flag: 'KR' },
+        { id: 'IN', label: 'IN', code: 'INR', rateKey: 'INR', flag: 'IN' },
+        { id: 'PK', label: 'PK', code: 'PKR', rateKey: 'PKR', flag: 'PK' },
+        { id: 'IR', label: 'IR', code: 'IRR', rateKey: 'IRR', flag: 'IR' },
+        { id: 'RU', label: 'RU', code: 'RUB', rateKey: 'RUB', flag: 'RU' },
+        { id: 'TR', label: 'TR', code: 'TRY', rateKey: 'TRY', flag: 'TR' },
+        { id: 'OM', label: 'OM', code: 'OMR', rateKey: 'OMR', flag: 'OM' },
+        { id: 'SA', label: 'SA', code: 'SAR', rateKey: 'SAR', flag: 'SA' },
+        { id: 'QA', label: 'QA', code: 'QAR', rateKey: 'QAR', flag: 'QA' },
+        { id: 'BH', label: 'BH', code: 'BHD', rateKey: 'BHD', flag: 'BH' }
+      ];
+
+      // Automatic RTL direction for Arabic, Urdu, and Persian
+      var RTL_LANGS = { ar: true, ur: true, fa: true };
+
+      var I18N = {
+        en: {
+          title: 'TAX REFUND AND CURRENCY CONVERTER',
+          aedLabel: 'VALUE (AED)',
+          refundLabel: 'TAX REFUND',
+          refundFormula: 'AED × 5% × 81%',
+          calcBtn: 'CALCULATOR',
+          calcTitle: 'CALCULATOR',
+          applyToAed: 'Apply to AED',
+          close: 'Close',
+          settingsTitle: 'SETTINGS',
+          langLabel: 'LANGUAGE',
+          bgLabel: 'BACKGROUND IMAGE',
+          chooseBg: 'Choose Image',
+          save: 'Save',
+          remove: 'Remove',
+          cancel: 'Cancel',
+          bgEmpty: 'No custom background',
+          bgStaged: 'Staged preview ready',
+          ratesTitle: 'LIVE AED RATES',
+          refresh: 'Refresh',
+          inquiryLog: 'INQUIRY LOG',
+          exportXls: 'Export .XLS',
+          clear: 'Clear',
+          livePill: 'LIVE · 5s',
+          fallbackPill: 'CACHED · 5s'
+        },
+        ar: {
+          title: 'حاسبة استرداد الضرائب وتحويل العملات',
+          aedLabel: 'القيمة (درهم)',
+          refundLabel: 'استرداد الضريبة',
+          refundFormula: 'درهم × 5% × 81%',
+          calcBtn: 'الآلة الحاسبة',
+          calcTitle: 'الآلة الحاسبة',
+          applyToAed: 'تطبيق على الدرهم',
+          close: 'إغلاق',
+          settingsTitle: 'الإعدادات',
+          langLabel: 'اللغة',
+          bgLabel: 'صورة الخلفية',
+          chooseBg: 'اختر صورة',
+          save: 'حفظ',
+          remove: 'إزالة',
+          cancel: 'إلغاء',
+          bgEmpty: 'لا توجد خلفية مخصصة',
+          bgStaged: 'معاينة جاهزة للحفظ',
+          ratesTitle: 'أسعار الصرف المباشرة',
+          refresh: 'تحديث',
+          inquiryLog: 'سجل الاستعلامات',
+          exportXls: 'تصدير .XLS',
+          clear: 'مسح',
+          livePill: 'مباشر · 5ث',
+          fallbackPill: 'مؤقت · 5ث'
+        },
+        ur: {
+          title: 'ٹیکس ریفنڈ اور کرنسی کنورٹر',
+          aedLabel: 'رقم (AED)',
+          refundLabel: 'ٹیکس ریفنڈ',
+          refundFormula: 'AED × 5% × 81%',
+          calcBtn: 'کیلکولیٹر',
+          calcTitle: 'کیلکولیٹر',
+          applyToAed: 'AED میں لاگو کریں',
+          close: 'بند کریں',
+          settingsTitle: 'ترتیبات',
+          langLabel: 'زبان',
+          bgLabel: 'پس منظر کی تصویر',
+          chooseBg: 'تصویر منتخب کریں',
+          save: 'محفوظ کریں',
+          remove: 'ہٹائیں',
+          cancel: 'منسوخ کریں',
+          bgEmpty: 'کوئی حسب ضرورت پس منظر نہیں',
+          bgStaged: 'پیش نظارہ تیار ہے',
+          ratesTitle: 'لائیو AED نرخ',
+          refresh: 'تازہ کریں',
+          inquiryLog: 'انکوائری لاگ',
+          exportXls: 'ایکسپورٹ .XLS',
+          clear: 'صاف کریں',
+          livePill: 'لائیو · 5s',
+          fallbackPill: 'محفوظ · 5s'
+        },
+        fa: {
+          title: 'بازپرداخت مالیات و تبدیل ارز',
+          aedLabel: 'مقدار (درهم)',
+          refundLabel: 'بازپرداخت مالیات',
+          refundFormula: 'درهم × 5% × 81%',
+          calcBtn: 'ماشین حساب',
+          calcTitle: 'ماشین حساب',
+          applyToAed: 'اعمال به درهم',
+          close: 'بستن',
+          settingsTitle: 'تنظیمات',
+          langLabel: 'زبان',
+          bgLabel: 'تصویر پس‌زمینه',
+          chooseBg: 'انتخاب تصویر',
+          save: 'ذخیره',
+          remove: 'حذف',
+          cancel: 'لغو',
+          bgEmpty: 'پس‌زمینه سفارشی انتخاب نشده',
+          bgStaged: 'پیش‌نمایش آماده ذخیره است',
+          ratesTitle: 'نرخ زنده درهم',
+          refresh: 'به‌روزرسانی',
+          inquiryLog: 'گزارش استعلام‌ها',
+          exportXls: 'خروجی .XLS',
+          clear: 'پاک کردن',
+          livePill: 'زنده · 5ث',
+          fallbackPill: 'ذخیره · 5ث'
+        },
+        hi: {
+          title: 'टैक्स रिफंड और मुद्रा परिवर्तक',
+          aedLabel: 'राशि (AED)',
+          refundLabel: 'टैक्स रिफंड',
+          refundFormula: 'AED × 5% × 81%',
+          calcBtn: 'कैलकुलेटर',
+          calcTitle: 'कैलकुलेटर',
+          applyToAed: 'AED में लागू करें',
+          close: 'बंद करें',
+          settingsTitle: 'सेटिंग्स',
+          langLabel: 'भाषा',
+          bgLabel: 'पृष्ठभूमि छवि',
+          chooseBg: 'छवि चुनें',
+          save: 'सहेजें',
+          remove: 'हटाएं',
+          cancel: 'रद्द करें',
+          bgEmpty: 'कोई कस्टम पृष्ठभूमि नहीं',
+          bgStaged: 'पूर्वावलोकन तैयार है',
+          ratesTitle: 'लाइव AED दरें',
+          refresh: 'ताज़ा करें',
+          inquiryLog: 'जांच लॉग',
+          exportXls: '.XLS निर्यात',
+          clear: 'साफ़ करें',
+          livePill: 'LIVE · 5s',
+          fallbackPill: 'CACHE · 5s'
+        },
+        tl: {
+          title: 'TAX REFUND AT CURRENCY CONVERTER',
+          aedLabel: 'HALAGA (AED)',
+          refundLabel: 'TAX REFUND',
+          refundFormula: 'AED × 5% × 81%',
+          calcBtn: 'CALCULATOR',
+          calcTitle: 'CALCULATOR',
+          applyToAed: 'Ilapat sa AED',
+          close: 'Isara',
+          settingsTitle: 'MGA SETTING',
+          langLabel: 'WIKA',
+          bgLabel: 'LARAWANG BACKGROUND',
+          chooseBg: 'Pumili ng Larawan',
+          save: 'I-save',
+          remove: 'Alisin',
+          cancel: 'Kanselahin',
+          bgEmpty: 'Walang custom na background',
+          bgStaged: 'Handa na ang preview',
+          ratesTitle: 'LIVE AED RATES',
+          refresh: 'I-refresh',
+          inquiryLog: 'INQUIRY LOG',
+          exportXls: 'I-export .XLS',
+          clear: 'I-clear',
+          livePill: 'LIVE · 5s',
+          fallbackPill: 'CACHE · 5s'
+        },
+        zh: {
+          title: '退税与多币种换算器',
+          aedLabel: '金额 (AED)',
+          refundLabel: '退税金额',
+          refundFormula: 'AED × 5% × 81%',
+          calcBtn: '计算器',
+          calcTitle: '计算器',
+          applyToAed: '填入 AED',
+          close: '关闭',
+          settingsTitle: '设置',
+          langLabel: '语言',
+          bgLabel: '背景图片',
+          chooseBg: '选择图片',
+          save: '保存',
+          remove: '移除',
+          cancel: '取消',
+          bgEmpty: '未设置自定义背景',
+          bgStaged: '预览已就绪',
+          ratesTitle: '实时 AED 汇率',
+          refresh: '刷新',
+          inquiryLog: '查询记录',
+          exportXls: '导出 .XLS',
+          clear: '清除',
+          livePill: '实时 · 5s',
+          fallbackPill: '缓存 · 5s'
+        },
+        ru: {
+          title: 'ВОЗВРАТ TAX FREE И КОНВЕРТЕР',
+          aedLabel: 'СУММА (AED)',
+          refundLabel: 'ВОЗВРАТ',
+          refundFormula: 'AED × 5% × 81%',
+          calcBtn: 'КАЛЬКУЛЯТОР',
+          calcTitle: 'КАЛЬКУЛЯТОР',
+          applyToAed: 'Вставить в AED',
+          close: 'Закрыть',
+          settingsTitle: 'НАСТРОЙКИ',
+          langLabel: 'ЯЗЫК',
+          bgLabel: 'ФОНОВОЕ ИЗОБРАЖЕНИЕ',
+          chooseBg: 'Выбрать фото',
+          save: 'Сохранить',
+          remove: 'Удалить',
+          cancel: 'Отмена',
+          bgEmpty: 'Фон не задан',
+          bgStaged: 'Предпросмотр готов',
+          ratesTitle: 'КУРСЫ AED ОНЛАЙН',
+          refresh: 'Обновить',
+          inquiryLog: 'ЖУРНАЛ ЗАПРОСОВ',
+          exportXls: 'Экспорт .XLS',
+          clear: 'Очистить',
+          livePill: 'LIVE · 5s',
+          fallbackPill: 'CACHE · 5s'
+        },
+        fr: {
+          title: 'REMBOURSEMENT TVA & CONVERTISSEUR',
+          aedLabel: 'MONTANT (AED)',
+          refundLabel: 'REMBOURSEMENT',
+          refundFormula: 'AED × 5% × 81%',
+          calcBtn: 'CALCULATRICE',
+          calcTitle: 'CALCULATRICE',
+          applyToAed: 'Appliquer en AED',
+          close: 'Fermer',
+          settingsTitle: 'PARAMÈTRES',
+          langLabel: 'LANGUE',
+          bgLabel: 'IMAGE DE FOND',
+          chooseBg: 'Choisir image',
+          save: 'Enregistrer',
+          remove: 'Supprimer',
+          cancel: 'Annuler',
+          bgEmpty: 'Aucun arrière-plan personnalisé',
+          bgStaged: 'Aperçu prêt',
+          ratesTitle: 'TAUX AED EN DIRECT',
+          refresh: 'Actualiser',
+          inquiryLog: 'HISTORIQUE',
+          exportXls: 'Exporter .XLS',
+          clear: 'Effacer',
+          livePill: 'LIVE · 5s',
+          fallbackPill: 'CACHE · 5s'
+        }
+      };
+
+      /* ========================================================================
+         2. INLINE SVG FLAGS (INCLUDING DEDICATED FRENCH TRICOLORE STRIPES)
+         ======================================================================== */
+      function getFlagSvg(flagCode) {
+        switch (flagCode) {
+          case 'PH':
+            return '<svg class="flag-svg" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="10" fill="#0038a8"/><rect y="10" width="28" height="10" fill="#ce1126"/><polygon points="0,0 12,10 0,20" fill="#ffffff"/><circle cx="5" cy="10" r="2.2" fill="#fcd116"/></svg>';
+          case 'US':
+            return '<svg class="flag-svg" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#ffffff"/><rect y="0" width="28" height="2.8" fill="#b22234"/><rect y="5.7" width="28" height="2.8" fill="#b22234"/><rect y="11.4" width="28" height="2.8" fill="#b22234"/><rect y="17.1" width="28" height="2.9" fill="#b22234"/><rect width="12.5" height="11.4" fill="#3c3b6e"/></svg>';
+          case 'EU':
+            return '<svg class="flag-svg" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#003399"/><circle cx="14" cy="10" r="5.5" fill="none" stroke="#ffcc00" stroke-width="1.3" stroke-dasharray="1 2.2"/></svg>';
+          case 'FR':
+            return '<svg class="flag-svg" viewBox="0 0 28 20" aria-hidden="true"><rect x="0" y="0" width="9.33" height="20" fill="#0055a4"/><rect x="9.33" y="0" width="9.34" height="20" fill="#ffffff"/><rect x="18.67" y="0" width="9.33" height="20" fill="#ef4135"/></svg>';
+          case 'CN':
+            return '<svg class="flag-svg" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#de2910"/><polygon points="6,4.5 7.1,7.8 10.5,7.8 7.7,9.8 8.8,13.1 6,11.1 3.2,13.1 4.3,9.8 1.5,7.8 4.9,7.8" fill="#ffde00"/></svg>';
+          case 'JP':
+            return '<svg class="flag-svg" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#ffffff"/><circle cx="14" cy="10" r="5.2" fill="#bc002d"/></svg>';
+          case 'KR':
+            return '<svg class="flag-svg" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#ffffff"/><circle cx="14" cy="10" r="4.8" fill="#cd2e3a"/><path d="M9.2,10 A4.8,4.8 0 0,0 18.8,10 A2.4,2.4 0 0,1 14,10 A2.4,2.4 0 0,0 9.2,10" fill="#0047a0"/></svg>';
+          case 'IN':
+            return '<svg class="flag-svg" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="6.7" y="0" fill="#ff9933"/><rect width="28" height="6.6" y="6.7" fill="#ffffff"/><rect width="28" height="6.7" y="13.3" fill="#138808"/><circle cx="14" cy="10" r="2.2" fill="none" stroke="#000080" stroke-width="1"/></svg>';
+          case 'PK':
+            return '<svg class="flag-svg" viewBox="0 0 28 20" aria-hidden="true"><rect width="7" height="20" fill="#ffffff"/><rect x="7" width="21" height="20" fill="#01411c"/><circle cx="18" cy="10" r="4.6" fill="#ffffff"/><circle cx="19.4" cy="8.8" r="4.2" fill="#01411c"/></svg>';
+          case 'IR':
+            return '<svg class="flag-svg" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="6.7" y="0" fill="#239f40"/><rect width="28" height="6.6" y="6.7" fill="#ffffff"/><rect width="28" height="6.7" y="13.3" fill="#da0000"/><circle cx="14" cy="10" r="2" fill="none" stroke="#da0000" stroke-width="1.1"/></svg>';
+          case 'RU':
+            return '<svg class="flag-svg" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="6.7" y="0" fill="#ffffff"/><rect width="28" height="6.6" y="6.7" fill="#0039a6"/><rect width="28" height="6.7" y="13.3" fill="#d52b1e"/></svg>';
+          case 'TR':
+            return '<svg class="flag-svg" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#e30a17"/><circle cx="12.2" cy="10" r="4.6" fill="#ffffff"/><circle cx="13.6" cy="10" r="3.7" fill="#e30a17"/></svg>';
+          case 'OM':
+            return '<svg class="flag-svg" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="6.7" y="0" fill="#ffffff"/><rect width="28" height="6.6" y="6.7" fill="#db161b"/><rect width="28" height="6.7" y="13.3" fill="#008000"/><rect width="8" height="20" fill="#db161b"/></svg>';
+          case 'SA':
+            return '<svg class="flag-svg" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#006c35"/><line x1="7" y1="14" x2="21" y2="14" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/></svg>';
+          case 'QA':
+            return '<svg class="flag-svg" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#8d1b3d"/><rect width="8.5" height="20" fill="#ffffff"/><polygon points="8.5,0 11,2 8.5,4 11,6 8.5,8 11,10 8.5,12 11,14 8.5,16 11,18 8.5,20" fill="#ffffff"/></svg>';
+          case 'BH':
+            return '<svg class="flag-svg" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#ce1126"/><polygon points="0,0 8.5,0 12,2 8.5,4 12,6 8.5,8 12,10 8.5,12 12,14 8.5,16 12,18 8.5,20 0,20" fill="#ffffff"/></svg>';
+          default:
+            return '<svg class="flag-svg" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#94a3b8"/></svg>';
+        }
+      }
+
+      /* ========================================================================
+         3. APPLICATION STATE & DOM REFERENCES
+         ======================================================================== */
+      var state = {
+        lang: 'en',
+        inputRaw: '0',
+        ratesPerAed: cloneRates(BASELINE_RATES_PER_AED),
+        rateSource: 'baseline',
+        isFetchingRates: false,
+        savedBgDataUrl: '',
+        stagedBgDataUrl: '',
+        stagedBgDirty: false,
+        inquiryLogs: [],
+        lastLoggedSignature: '',
+        logTimerId: null,
+        calcLastOpenTs: 0,
+        calcState: {
+          current: '0',
+          previous: null,
+          operator: null,
+          expression: '',
+          overwriteNext: false,
+          isError: false
+        }
+      };
+
+      var dom = {};
+
+      var TWO_DEC_FORMATTER = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+
+      var INT_FORMATTER = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      });
+
+      function cloneRates(src) {
+        var out = {};
+        Object.keys(BASELINE_RATES_PER_AED).forEach(function (k) {
+          var v = src && typeof src[k] === 'number' && isFinite(src[k]) ? src[k] : BASELINE_RATES_PER_AED[k];
+          out[k] = v;
+        });
+        return out;
+      }
+
+      function safeGetStorage(key) {
+        try {
+          return window.localStorage ? window.localStorage.getItem(key) : null;
+        } catch (err) {
+          return null;
+        }
+      }
+
+      function safeSetStorage(key, val) {
+        try {
+          if (window.localStorage) {
+            window.localStorage.setItem(key, val);
+          }
+          return true;
+        } catch (err) {
+          return false;
+        }
+      }
+
+      function safeRemoveStorage(key) {
+        try {
+          if (window.localStorage) {
+            window.localStorage.removeItem(key);
+          }
+        } catch (err) {
+          // Ignore storage errors
+        }
+      }
+
+      function bindDom() {
+        dom.body = document.body;
+        dom.appShell = document.getElementById('appShell');
+        dom.appCard = document.getElementById('appCard');
+        dom.appTitle = document.getElementById('appTitle');
+        dom.rateStatusPill = document.getElementById('rateStatusPill');
+        dom.rateStatusText = document.getElementById('rateStatusText');
+        dom.openSettingsBtn = document.getElementById('openSettingsBtn');
+        dom.aedInputLabel = document.getElementById('aedInputLabel');
+        dom.valueInput = document.getElementById('valueInput');
+        dom.refundLabel = document.getElementById('refundLabel');
+        dom.taxRefundValue = document.getElementById('taxRefundValue');
+        dom.refundFormulaNote = document.getElementById('refundFormulaNote');
+        dom.currencyGrid = document.getElementById('currencyGrid');
+        dom.openCalcBtn = document.getElementById('openCalcBtn');
+        dom.openCalcLabel = document.getElementById('openCalcLabel');
+        dom.esaadLabel = document.getElementById('esaadLabel');
+        dom.esaadFazaaValue = document.getElementById('esaadFazaaValue');
+        dom.threeMnthLabel = document.getElementById('threeMnthLabel');
+        dom.m3Value = document.getElementById('m3Value');
+        dom.sixMnthLabel = document.getElementById('sixMnthLabel');
+        dom.m6Value = document.getElementById('m6Value');
+        dom.nineMnthLabel = document.getElementById('nineMnthLabel');
+        dom.m9Value = document.getElementById('m9Value');
+        dom.twelveMnthLabel = document.getElementById('twelveMnthLabel');
+        dom.m12Value = document.getElementById('m12Value');
+        dom.fourMnthLabel = document.getElementById('fourMnthLabel');
+        dom.m4Value = document.getElementById('m4Value');
+        dom.eightMnthLabel = document.getElementById('eightMnthLabel');
+        dom.m8Value = document.getElementById('m8Value');
+        dom.numpad = document.getElementById('numpad');
+        dom.numpadGrid = document.getElementById('numpadGrid');
+
+        dom.settingsBackdrop = document.getElementById('settingsBackdrop');
+        dom.settingsPanel = document.getElementById('settingsPanel');
+        dom.settingsModalTitle = document.getElementById('settingsModalTitle');
+        dom.closeSettingsBtn = document.getElementById('closeSettingsBtn');
+        dom.langLabel = document.getElementById('langLabel');
+        dom.langSelect = document.getElementById('langSelect');
+        dom.bgSectionLabel = document.getElementById('bgSectionLabel');
+        dom.bgStagePreview = document.getElementById('bgStagePreview');
+        dom.chooseBgLabel = document.getElementById('chooseBgLabel');
+        dom.bgFileInput = document.getElementById('bgFileInput');
+        dom.saveBgBtn = document.getElementById('saveBgBtn');
+        dom.removeBgBtn = document.getElementById('removeBgBtn');
+        dom.cancelBgBtn = document.getElementById('cancelBgBtn');
+        dom.bgHelpText = document.getElementById('bgHelpText');
+        dom.ratesTableTitle = document.getElementById('ratesTableTitle');
+        dom.refreshRatesNowBtn = document.getElementById('refreshRatesNowBtn');
+        dom.ratesTableBody = document.getElementById('ratesTableBody');
+        dom.inquiryLogTitle = document.getElementById('inquiryLogTitle');
+        dom.exportXlsBtn = document.getElementById('exportXlsBtn');
+        dom.clearLogsBtn = document.getElementById('clearLogsBtn');
+        dom.inquiryLogList = document.getElementById('inquiryLogList');
+        dom.settingsStatus = document.getElementById('settingsStatus');
+
+        dom.calcBackdrop = document.getElementById('calcBackdrop');
+        dom.calcPanel = document.getElementById('calcPanel');
+        dom.calcModalTitle = document.getElementById('calcModalTitle');
+        dom.closeCalcBtn = document.getElementById('closeCalcBtn');
+        dom.calcExpr = document.getElementById('calcExpr');
+        dom.calcDisplay = document.getElementById('calcDisplay');
+        dom.calcKeys = document.getElementById('calcKeys');
+        dom.applyCalcToAedBtn = document.getElementById('applyCalcToAedBtn');
+        dom.closeCalcFooterBtn = document.getElementById('closeCalcFooterBtn');
+      }
+
+      /* ========================================================================
+         4. FORMATTING, TAX REFUND, ESAAD/FAZAA, INSTALLMENTS & CONVERSION
+         ======================================================================== */
+      function formatTwoDecimals(num) {
+        var safe = typeof num === 'number' && isFinite(num) ? num : 0;
+        return TWO_DEC_FORMATTER.format(safe);
+      }
+
+      function formatInputDisplay(rawStr) {
+        if (!rawStr || rawStr === '0') return '0.00';
+        var hasTrailingDot = rawStr.charAt(rawStr.length - 1) === '.';
+        var parts = rawStr.split('.');
+        var intPart = parseInt(parts[0] || '0', 10);
+        var formattedInt = isNaN(intPart) ? '0' : INT_FORMATTER.format(intPart);
+        if (parts.length > 1) {
+          return formattedInt + '.' + parts[1];
+        }
+        return hasTrailingDot ? formattedInt + '.' : formattedInt;
+      }
+
+      function getNumericAed() {
+        var parsed = parseFloat(state.inputRaw);
+        return isNaN(parsed) || !isFinite(parsed) || parsed < 0 ? 0 : parsed;
+      }
+
+      // Formula: Tax Refund (AED) = Value (AED) * 5% * 81%
+      function computeTaxRefund(aedAmount) {
+        return aedAmount * REFUND_MULTIPLIER;
+      }
+
+      // Formula: Esaad / Fazaa (AED) = Value (AED) minus 0.95% = Value (AED) * 0.9905
+      function computeEsaadFazaa(aedAmount) {
+        return aedAmount * 0.9905;
+      }
+
+      // Formula: 3 mnth (AED) = Value (AED) / 3
+      function computeThreeMonth(aedAmount) {
+        return aedAmount / 3;
+      }
+
+      // Formula: 6 mnth (AED) = Value (AED) / 6
+      function computeSixMonth(aedAmount) {
+        return aedAmount / 6;
+      }
+
+      // Formula: 9 mnth (AED) = Value (AED) / 9
+      function computeNineMonth(aedAmount) {
+        return aedAmount / 9;
+      }
+
+      // Formula: 12 mnth (AED) = Value (AED) / 12
+      function computeTwelveMonth(aedAmount) {
+        return aedAmount / 12;
+      }
+
+      // Formula: 4 mnth (AED) = Value (AED) / 4
+      function computeFourMonth(aedAmount) {
+        return aedAmount / 4;
+      }
+
+      // Formula: 8 mnth (AED) = Value (AED) / 8
+      function computeEightMonth(aedAmount) {
+        return aedAmount / 8;
+      }
+
+      // Exact 2-decimal conversion without rounding up (Math.trunc(amount * 100) / 100)
+      function formatExactTwoDecimalNoRoundUp(amount) {
+        if (typeof amount !== 'number' || !isFinite(amount) || amount <= 0) {
+          return '0.00';
+        }
+        var eps = Number.EPSILON * (amount >= 0 ? 1 : -1);
+        var truncatedVal = Math.trunc((amount + eps) * 100) / 100;
+        if (!(truncatedVal > 0)) {
+          return '0.00';
+        }
+        var fixedStr = truncatedVal.toFixed(2);
+        var parts = fixedStr.split('.');
+        var wholeInt = parseInt(parts[0] || '0', 10);
+        var wholeFormatted = INT_FORMATTER.format(isNaN(wholeInt) ? 0 : wholeInt);
+        return wholeFormatted + '.' + (parts[1] || '00');
+      }
+
+      function renderCurrencyGridDom() {
+        if (!dom.currencyGrid) return;
+        var html = '';
+        for (var i = 0; i < TILES_CONFIG.length; i += 1) {
+          var t = TILES_CONFIG[i];
+          html +=
+            '<div class="currency-tile" data-tile-id="' + t.id + '">' +
+              '<div class="tile-left">' +
+                getFlagSvg(t.flag) +
+                '<span class="tile-country">' + t.label + '</span>' +
+                '<span class="tile-code">' + t.code + '</span>' +
+              '</div>' +
+              '<div id="tileVal_' + t.id + '" class="tile-value">0.00</div>' +
+            '</div>';
+        }
+        dom.currencyGrid.innerHTML = html;
+      }
+
+      function updateConversions() {
+        var aed = getNumericAed();
+        if (dom.valueInput) {
+          dom.valueInput.value = formatInputDisplay(state.inputRaw);
+        }
+        var refund = computeTaxRefund(aed);
+        if (dom.taxRefundValue) {
+          dom.taxRefundValue.textContent = formatTwoDecimals(refund);
+        }
+        if (dom.esaadFazaaValue) {
+          dom.esaadFazaaValue.textContent = formatTwoDecimals(computeEsaadFazaa(aed));
+        }
+        if (dom.m3Value) {
+          dom.m3Value.textContent = formatTwoDecimals(computeThreeMonth(aed));
+        }
+        if (dom.m6Value) {
+          dom.m6Value.textContent = formatTwoDecimals(computeSixMonth(aed));
+        }
+        if (dom.m9Value) {
+          dom.m9Value.textContent = formatTwoDecimals(computeNineMonth(aed));
+        }
+        if (dom.m12Value) {
+          dom.m12Value.textContent = formatTwoDecimals(computeTwelveMonth(aed));
+        }
+        if (dom.m4Value) {
+          dom.m4Value.textContent = formatTwoDecimals(computeFourMonth(aed));
+        }
+        if (dom.m8Value) {
+          dom.m8Value.textContent = formatTwoDecimals(computeEightMonth(aed));
+        }
+
+        for (var i = 0; i < TILES_CONFIG.length; i += 1) {
+          var t = TILES_CONFIG[i];
+          var el = document.getElementById('tileVal_' + t.id);
+          if (!el) continue;
+          var rate = state.ratesPerAed[t.rateKey];
+          var rawConverted = aed * (typeof rate === 'number' && isFinite(rate) ? rate : 0);
+          var formatted = formatExactTwoDecimalNoRoundUp(rawConverted);
+          el.textContent = formatted;
+          if (formatted.length >= 11) {
+            el.classList.add('is-wide-num');
+          } else {
+            el.classList.remove('is-wide-num');
+          }
+        }
+      }
+
+      /* ========================================================================
+         5. NUMPAD INPUT & 'C' CLEAR RULE (NO LOG ENTRY SAVED ON 'C')
+         ======================================================================== */
+      function pushDigit(digitStr) {
+        if (!/^[0-9]$/.test(digitStr)) return;
+        if (state.inputRaw === '0') {
+          state.inputRaw = digitStr;
+        } else {
+          if (state.inputRaw.replace(/[^0-9]/g, '').length >= 12) return;
+          var dotSplit = state.inputRaw.split('.');
+          if (dotSplit.length === 2 && dotSplit[1].length >= 2) return;
+          state.inputRaw += digitStr;
+        }
+        updateConversions();
+        scheduleAutoLog();
+      }
+
+      function pushDecimal() {
+        if (state.inputRaw.indexOf('.') !== -1) return;
+        state.inputRaw += '.';
+        updateConversions();
+      }
+
+      function popChar() {
+        if (state.inputRaw.length <= 1) {
+          state.inputRaw = '0';
+        } else {
+          state.inputRaw = state.inputRaw.slice(0, -1);
+          if (state.inputRaw.charAt(state.inputRaw.length - 1) === '.') {
+            state.inputRaw = state.inputRaw.slice(0, -1) || '0';
+          }
+        }
+        updateConversions();
+        scheduleAutoLog();
+      }
+
+      function sanitizeRawInput(str) {
+        var cleaned = String(str || '').replace(/[^0-9.]/g, '');
+        var firstDot = cleaned.indexOf('.');
+        if (firstDot !== -1) {
+          cleaned = cleaned.slice(0, firstDot + 1) + cleaned.slice(firstDot + 1).replace(/\./g, '');
+        }
+        var parts = cleaned.split('.');
+        var intPart = (parts[0] || '').replace(/^0+(?=\d)/, '').slice(0, 12);
+        if (parts.length > 1) {
+          var decPart = parts[1].slice(0, 2);
+          return (intPart || '0') + '.' + decPart;
+        }
+        return intPart || '0';
+      }
+
+      function closeAllOverlays() {
+        closeCalcModal();
+        closeSettingsModal();
+      }
+
+      // Pressing C resets AED input to 0, updates displays to 0.00,
+      // closes open overlays, and does NOT log an inquiry.
+      function clearAllWithoutSaving() {
+        if (state.logTimerId) {
+          clearTimeout(state.logTimerId);
+          state.logTimerId = null;
+        }
+        state.inputRaw = '0';
+        state.lastLoggedSignature = '';
+        resetCalcState();
+        closeAllOverlays();
+        updateConversions();
+      }
+
+      /* ========================================================================
+         6. INQUIRY LOGGING (DEBOUNCE OR ENTER) & .XLS EXPORT
+         ======================================================================== */
+      function loadInquiryLogs() {
+        try {
+          var raw = safeGetStorage(STORAGE_KEYS.LOGS);
+          if (!raw) {
+            state.inquiryLogs = [];
+            return;
+          }
+          var parsed = JSON.parse(raw);
+          state.inquiryLogs = Array.isArray(parsed) ? parsed.slice(0, MAX_INQUIRY_LOGS) : [];
+        } catch (err) {
+          state.inquiryLogs = [];
+        }
+      }
+
+      function saveInquiryLogs() {
+        safeSetStorage(STORAGE_KEYS.LOGS, JSON.stringify(state.inquiryLogs.slice(0, MAX_INQUIRY_LOGS)));
+      }
+
+      function recordInquiryIfNonZero() {
+        var aed = getNumericAed();
+        if (!(aed > 0)) return;
+        var refund = computeTaxRefund(aed);
+        var esaadVal = computeEsaadFazaa(aed);
+        var threeMnthVal = computeThreeMonth(aed);
+        var sixMnthVal = computeSixMonth(aed);
+        var nineMnthVal = computeNineMonth(aed);
+        var twelveMnthVal = computeTwelveMonth(aed);
+        var fourMnthVal = computeFourMonth(aed);
+        var eightMnthVal = computeEightMonth(aed);
+        var signature = aed.toFixed(4) + '|' + refund.toFixed(4);
+        if (signature === state.lastLoggedSignature) return;
+        state.lastLoggedSignature = signature;
+
+        var conversionsSnapshot = {};
+        for (var i = 0; i < TILES_CONFIG.length; i += 1) {
+          var t = TILES_CONFIG[i];
+          var rate = state.ratesPerAed[t.rateKey] || 0;
+          conversionsSnapshot[t.id] = formatExactTwoDecimalNoRoundUp(aed * rate);
+        }
+
+        var entry = {
+          id: 'inq_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+          timestamp: new Date().toISOString(),
+          aedValue: Number(aed.toFixed(2)),
+          taxRefund: Number(refund.toFixed(2)),
+          esaadFazaa: Number(esaadVal.toFixed(2)),
+          threeMnth: Number(threeMnthVal.toFixed(2)),
+          sixMnth: Number(sixMnthVal.toFixed(2)),
+          nineMnth: Number(nineMnthVal.toFixed(2)),
+          twelveMnth: Number(twelveMnthVal.toFixed(2)),
+          fourMnth: Number(fourMnthVal.toFixed(2)),
+          eightMnth: Number(eightMnthVal.toFixed(2)),
+          conversions: conversionsSnapshot
+        };
+
+        state.inquiryLogs.unshift(entry);
+        state.inquiryLogs = state.inquiryLogs.slice(0, MAX_INQUIRY_LOGS);
+        saveInquiryLogs();
+        renderInquiryLogsDom();
+      }
+
+      function scheduleAutoLog() {
+        if (state.logTimerId) {
+          clearTimeout(state.logTimerId);
+        }
+        var aed = getNumericAed();
+        if (!(aed > 0)) return;
+        state.logTimerId = setTimeout(function () {
+          state.logTimerId = null;
+          recordInquiryIfNonZero();
+        }, 1200);
+      }
+
+      function renderInquiryLogsDom() {
+        if (!dom.inquiryLogList) return;
+        if (!state.inquiryLogs.length) {
+          dom.inquiryLogList.innerHTML = '<div class="settings-help">No inquiries logged yet.</div>';
+          return;
+        }
+        var html = '';
+        for (var i = 0; i < Math.min(state.inquiryLogs.length, 30); i += 1) {
+          var item = state.inquiryLogs[i];
+          var dt = new Date(item.timestamp);
+          var timeStr = isNaN(dt.getTime()) ? item.timestamp : dt.toLocaleString();
+          html +=
+            '<div class="log-item">' +
+              '<div class="log-item-top">' +
+                '<span>AED ' + formatTwoDecimals(item.aedValue) + '</span>' +
+                '<span>Refund: ' + formatTwoDecimals(item.taxRefund) + ' AED</span>' +
+              '</div>' +
+              '<div class="log-item-sub">' + timeStr + ' · 3m: ' + formatTwoDecimals(item.threeMnth || (item.aedValue / 3)) + '</div>' +
+            '</div>';
+        }
+        dom.inquiryLogList.innerHTML = html;
+      }
+
+      function buildXlsContent() {
+        var rows = [
+          '<tr><th>Timestamp</th><th>AED Value</th><th>Tax Refund (AED)</th><th>Esaad / Fazaa (AED)</th><th>3 mnth (AED)</th><th>6 mnth (AED)</th><th>9 mnth (AED)</th><th>12 mnth (AED)</th><th>4 mnth (AED)</th><th>8 mnth (AED)</th>' +
+          TILES_CONFIG.map(function (t) { return '<th>' + t.label + ' (' + t.code + ')</th>'; }).join('') +
+          '</tr>'
+        ];
+        for (var i = 0; i < state.inquiryLogs.length; i += 1) {
+          var item = state.inquiryLogs[i];
+          var conv = item.conversions || {};
+          var esaadVal = typeof item.esaadFazaa === 'number' ? item.esaadFazaa : computeEsaadFazaa(item.aedValue);
+          var threeMnthVal = typeof item.threeMnth === 'number' ? item.threeMnth : computeThreeMonth(item.aedValue);
+          var sixMnthVal = typeof item.sixMnth === 'number' ? item.sixMnth : computeSixMonth(item.aedValue);
+          var nineMnthVal = typeof item.nineMnth === 'number' ? item.nineMnth : computeNineMonth(item.aedValue);
+          var twelveMnthVal = typeof item.twelveMnth === 'number' ? item.twelveMnth : computeTwelveMonth(item.aedValue);
+          var fourMnthVal = typeof item.fourMnth === 'number' ? item.fourMnth : computeFourMonth(item.aedValue);
+          var eightMnthVal = typeof item.eightMnth === 'number' ? item.eightMnth : computeEightMonth(item.aedValue);
+          rows.push(
+            '<tr>' +
+              '<td>' + escapeHtml(item.timestamp) + '</td>' +
+              '<td>' + item.aedValue.toFixed(2) + '</td>' +
+              '<td>' + item.taxRefund.toFixed(2) + '</td>' +
+              '<td>' + esaadVal.toFixed(2) + '</td>' +
+              '<td>' + threeMnthVal.toFixed(2) + '</td>' +
+              '<td>' + sixMnthVal.toFixed(2) + '</td>' +
+              '<td>' + nineMnthVal.toFixed(2) + '</td>' +
+              '<td>' + twelveMnthVal.toFixed(2) + '</td>' +
+              '<td>' + fourMnthVal.toFixed(2) + '</td>' +
+              '<td>' + eightMnthVal.toFixed(2) + '</td>' +
+              TILES_CONFIG.map(function (t) {
+                return '<td>' + escapeHtml(conv[t.id] || '0.00') + '</td>';
+              }).join('') +
+            '</tr>'
+          );
+        }
+        return (
+          '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
+          'xmlns:x="urn:schemas-microsoft-com:office:excel" ' +
+          'xmlns="http://www.w3.org/TR/REC-html40">' +
+          '<head><meta charset="UTF-8" /></head>' +
+          '<body><table>' + rows.join('') + '</table></body></html>'
+        );
+      }
+
+      function escapeHtml(str) {
+        return String(str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function triggerBlobDownload(xlsContent, filename) {
+        var blob = new Blob([xlsContent], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () {
+          URL.revokeObjectURL(url);
+        }, 1000);
+      }
+
+      function exportInquiriesToXls() {
+        if (!state.inquiryLogs.length) {
+          setSettingsStatus('No inquiry records to export.');
+          return;
+        }
+        var filename = 'tax-refund-inquiries.xls';
+        var xlsContent = buildXlsContent();
+
+        if (typeof window.showSaveFilePicker === 'function') {
+          window.showSaveFilePicker({
+            startIn: 'documents',
+            suggestedName: filename,
+            types: [{
+              description: 'Excel Spreadsheet',
+              accept: { 'application/vnd.ms-excel': ['.xls'] }
+            }]
+          }).then(function (handle) {
+            return handle.createWritable().then(function (writable) {
+              return writable.write(xlsContent).then(function () {
+                return writable.close();
+              });
+            });
+          }).then(function () {
+            setSettingsStatus('Saved ' + filename);
+          }).catch(function (err) {
+            if (err && err.name === 'AbortError') {
+              setSettingsStatus('Export cancelled.');
+              return;
+            }
+            triggerBlobDownload(xlsContent, filename);
+            setSettingsStatus('Downloaded ' + filename);
+          });
+        } else {
+          triggerBlobDownload(xlsContent, filename);
+          setSettingsStatus('Downloaded ' + filename);
+        }
+      }
+
+      /* ========================================================================
+         7. 5-SECOND LIVE EXCHANGE RATE REFRESH WITH GUARD, SANITY & FALLBACKS
+         ======================================================================== */
+      function loadCachedRates() {
+        try {
+          var raw = safeGetStorage(STORAGE_KEYS.RATES);
+          if (!raw) return;
+          var parsed = JSON.parse(raw);
+          if (parsed && parsed.rates) {
+            applySanitizedRates(parsed.rates, 'cache');
+          }
+        } catch (err) {
+          // Keep baseline rates
+        }
+      }
+
+      function isRateWithinBounds(code, val) {
+        if (typeof val !== 'number' || !isFinite(val) || val <= 0) return false;
+        var bounds = RATE_SANITY_BOUNDS[code];
+        if (!bounds) return true;
+        return val >= bounds[0] && val <= bounds[1];
+      }
+
+      function applySanitizedRates(incomingRates, sourceName) {
+        if (!incomingRates || typeof incomingRates !== 'object') return false;
+        var updatedCount = 0;
+        var nextRates = cloneRates(state.ratesPerAed);
+
+        Object.keys(BASELINE_RATES_PER_AED).forEach(function (code) {
+          var candidate = incomingRates[code];
+          if (typeof candidate === 'string') {
+            candidate = parseFloat(candidate);
+          }
+          if (isRateWithinBounds(code, candidate)) {
+            nextRates[code] = candidate;
+            updatedCount += 1;
+          }
+        });
+
+        if (updatedCount > 0) {
+          state.ratesPerAed = nextRates;
+          state.rateSource = sourceName || 'live';
+          safeSetStorage(STORAGE_KEYS.RATES, JSON.stringify({
+            updatedAt: Date.now(),
+            source: state.rateSource,
+            rates: state.ratesPerAed
+          }));
+          updateConversions();
+          renderRatesTableDom();
+          updateRateStatusPill();
+          return true;
+        }
+        return false;
+      }
+
+      function updateRateStatusPill() {
+        var langPack = I18N[state.lang] || I18N.en;
+        if (!dom.rateStatusPill || !dom.rateStatusText) return;
+        dom.rateStatusPill.classList.remove('is-syncing', 'is-fallback');
+        if (state.isFetchingRates) {
+          dom.rateStatusPill.classList.add('is-syncing');
+          dom.rateStatusText.textContent = 'SYNC · 5s';
+        } else if (state.rateSource === 'live') {
+          dom.rateStatusText.textContent = langPack.livePill;
+        } else {
+          dom.rateStatusPill.classList.add('is-fallback');
+          dom.rateStatusText.textContent = langPack.fallbackPill;
+        }
+      }
+
+      function fetchJsonWithTimeout(url, timeoutMs) {
+        return new Promise(function (resolve, reject) {
+          var done = false;
+          var timer = setTimeout(function () {
+            if (!done) {
+              done = true;
+              reject(new Error('Request timeout'));
+            }
+          }, timeoutMs || 3000);
+
+          fetch(url, { cache: 'no-store' })
+            .then(function (res) {
+              if (!res.ok) throw new Error('HTTP ' + res.status);
+              return res.json();
+            })
+            .then(function (data) {
+              if (!done) {
+                done = true;
+                clearTimeout(timer);
+                resolve(data);
+              }
+            })
+            .catch(function (err) {
+              if (!done) {
+                done = true;
+                clearTimeout(timer);
+                reject(err);
+              }
+            });
+        });
+      }
+
+      function refreshExchangeRates() {
+        if (state.isFetchingRates) return;
+        state.isFetchingRates = true;
+        updateRateStatusPill();
+
+        var ts = Date.now();
+        var erApiUrl = 'https://open.er-api.com/v6/latest/AED?t=' + ts;
+        var fawazMinUrl = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/aed.min.json?t=' + ts;
+        var fawazFullUrl = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/aed.json?t=' + ts;
+
+        fetchJsonWithTimeout(erApiUrl, 3000)
+          .then(function (data) {
+            if (data && data.result === 'success' && data.rates) {
+              return applySanitizedRates(data.rates, 'live');
+            }
+            throw new Error('Invalid open.er-api payload');
+          })
+          .catch(function () {
+            return fetchJsonWithTimeout(fawazMinUrl, 3000)
+              .then(function (data) {
+                if (data && data.aed) {
+                  var normalized = {};
+                  Object.keys(data.aed).forEach(function (k) {
+                    normalized[k.toUpperCase()] = data.aed[k];
+                  });
+                  return applySanitizedRates(normalized, 'live');
+                }
+                throw new Error('Invalid fawazahmed0 min payload');
+              });
+          })
+          .catch(function () {
+            return fetchJsonWithTimeout(fawazFullUrl, 3000)
+              .then(function (data) {
+                if (data && data.aed) {
+                  var normalized = {};
+                  Object.keys(data.aed).forEach(function (k) {
+                    normalized[k.toUpperCase()] = data.aed[k];
+                  });
+                  return applySanitizedRates(normalized, 'live');
+                }
+                return false;
+              });
+          })
+          .catch(function () {
+            return false;
+          })
+          .then(function (didUpdate) {
+            if (!didUpdate && state.rateSource === 'baseline') {
+              state.rateSource = 'fallback';
+            }
+            state.isFetchingRates = false;
+            updateRateStatusPill();
+          });
+      }
+
+      function renderRatesTableDom() {
+        if (!dom.ratesTableBody) return;
+        var seen = {};
+        var rowsHtml = '';
+        for (var i = 0; i < TILES_CONFIG.length; i += 1) {
+          var code = TILES_CONFIG[i].code;
+          if (seen[code]) continue;
+          seen[code] = true;
+          var perAed = state.ratesPerAed[code] || BASELINE_RATES_PER_AED[code] || 0;
+          var unitInAed = perAed > 0 ? 1 / perAed : 0;
+          rowsHtml +=
+            '<tr>' +
+              '<td><strong>' + code + '</strong></td>' +
+              '<td>' + perAed.toFixed(4) + '</td>' +
+              '<td>' + unitInAed.toFixed(4) + '</td>' +
+            '</tr>';
+        }
+        dom.ratesTableBody.innerHTML = rowsHtml;
+      }
+
+      /* ========================================================================
+         8. STANDALONE POP-UP ARITHMETIC CALCULATOR (#calcPanel)
+         ======================================================================== */
+      function resetCalcState() {
+        state.calcState = {
+          current: '0',
+          previous: null,
+          operator: null,
+          expression: '',
+          overwriteNext: false,
+          isError: false
+        };
+        renderCalcDisplay();
+      }
+
+      function renderCalcDisplay() {
+        if (!dom.calcDisplay || !dom.calcExpr) return;
+        var cs = state.calcState;
+        dom.calcDisplay.textContent = cs.current;
+        dom.calcExpr.textContent = cs.expression;
+        dom.calcDisplay.classList.toggle('is-error', Boolean(cs.isError));
+      }
+
+      function calcInputDigit(d) {
+        var cs = state.calcState;
+        if (cs.isError || cs.overwriteNext) {
+          cs.current = d;
+          cs.overwriteNext = false;
+          cs.isError = false;
+        } else if (cs.current === '0') {
+          cs.current = d;
+        } else if (cs.current.length < 15) {
+          cs.current += d;
+        }
+        renderCalcDisplay();
+      }
+
+      function calcInputDecimal() {
+        var cs = state.calcState;
+        if (cs.isError || cs.overwriteNext) {
+          cs.current = '0.';
+          cs.overwriteNext = false;
+          cs.isError = false;
+        } else if (cs.current.indexOf('.') === -1) {
+          cs.current += '.';
+        }
+        renderCalcDisplay();
+      }
+
+      function calcBackspace() {
+        var cs = state.calcState;
+        if (cs.isError) {
+          resetCalcState();
+          return;
+        }
+        if (cs.overwriteNext) {
+          cs.current = '0';
+          cs.overwriteNext = false;
+        } else if (cs.current.length <= 1) {
+          cs.current = '0';
+        } else {
+          cs.current = cs.current.slice(0, -1);
+        }
+        renderCalcDisplay();
+      }
+
+      function calcClearEntry() {
+        var cs = state.calcState;
+        cs.current = '0';
+        cs.isError = false;
+        cs.overwriteNext = false;
+        renderCalcDisplay();
+      }
+
+      function calcPercent() {
+        var cs = state.calcState;
+        if (cs.isError) return;
+        var currNum = parseFloat(cs.current);
+        if (isNaN(currNum)) currNum = 0;
+        var pctVal = (cs.previous !== null && cs.operator)
+          ? (cs.previous * currNum) / 100
+          : currNum / 100;
+        cs.current = formatCalcResult(pctVal);
+        renderCalcDisplay();
+      }
+
+      function performBinaryOp(a, b, op) {
+        if (op === '+') return a + b;
+        if (op === '-') return a - b;
+        if (op === '*') return a * b;
+        if (op === '/') {
+          if (b === 0) return { error: 'Error' };
+          return a / b;
+        }
+        return b;
+      }
+
+      function formatCalcResult(val) {
+        if (!isFinite(val)) return 'Error';
+        var rounded = Math.round(val * 1e8) / 1e8;
+        return String(rounded);
+      }
+
+      function calcSelectOperator(nextOp) {
+        var cs = state.calcState;
+        if (cs.isError) return;
+        var currNum = parseFloat(cs.current);
+        if (isNaN(currNum)) currNum = 0;
+
+        if (cs.previous !== null && cs.operator && !cs.overwriteNext) {
+          var res = performBinaryOp(cs.previous, currNum, cs.operator);
+          if (res && res.error) {
+            cs.current = 'Error';
+            cs.previous = null;
+            cs.operator = null;
+            cs.expression = '';
+            cs.isError = true;
+            renderCalcDisplay();
+            return;
+          }
+          cs.previous = res;
+          cs.current = formatCalcResult(res);
+        } else {
+          cs.previous = currNum;
+        }
+
+        cs.operator = nextOp;
+        cs.overwriteNext = true;
+        var sym = nextOp === '/' ? '÷' : nextOp === '*' ? '×' : nextOp === '-' ? '−' : '+';
+        cs.expression = formatCalcResult(cs.previous) + ' ' + sym;
+        renderCalcDisplay();
+      }
+
+      function calcEquals() {
+        var cs = state.calcState;
+        if (cs.isError || cs.operator === null || cs.previous === null) return;
+        var currNum = parseFloat(cs.current);
+        if (isNaN(currNum)) currNum = 0;
+
+        var sym = cs.operator === '/' ? '÷' : cs.operator === '*' ? '×' : cs.operator === '-' ? '−' : '+';
+        cs.expression = formatCalcResult(cs.previous) + ' ' + sym + ' ' + formatCalcResult(currNum) + ' =';
+
+        var res = performBinaryOp(cs.previous, currNum, cs.operator);
+        if (res && res.error) {
+          cs.current = 'Error';
+          cs.previous = null;
+          cs.operator = null;
+          cs.isError = true;
+          renderCalcDisplay();
+          return;
+        }
+
+        var formattedRes = formatCalcResult(res);
+        cs.current = formattedRes;
+        cs.previous = null;
+        cs.operator = null;
+        cs.overwriteNext = true;
+        renderCalcDisplay();
+      }
+
+      function applyCalcValueToAed() {
+        var cs = state.calcState;
+        if (cs.isError) return;
+        var num = parseFloat(cs.current);
+        if (isNaN(num) || !isFinite(num) || num < 0) {
+          state.inputRaw = '0';
+        } else {
+          var clamped = Math.min(num, 999999999999);
+          var clean = String(Math.round(clamped * 100) / 100);
+          state.inputRaw = clean === '0' ? '0' : clean;
+        }
+        updateConversions();
+        if (getNumericAed() > 0) {
+          if (state.logTimerId) {
+            clearTimeout(state.logTimerId);
+            state.logTimerId = null;
+          }
+          recordInquiryIfNonZero();
+        }
+        closeCalcModal();
+      }
+
+      function openCalcModal() {
+        var now = Date.now();
+        if (now - state.calcLastOpenTs < 250) return;
+        state.calcLastOpenTs = now;
+
+        closeSettingsModal();
+        var currentAed = getNumericAed();
+        state.calcState = {
+          current: currentAed > 0 ? String(currentAed) : '0',
+          previous: null,
+          operator: null,
+          expression: '',
+          overwriteNext: false,
+          isError: false
+        };
+        renderCalcDisplay();
+
+        if (dom.calcBackdrop) dom.calcBackdrop.classList.add('is-open');
+        if (dom.calcPanel) {
+          dom.calcPanel.classList.add('is-open');
+          setTimeout(function () {
+            if (dom.calcPanel && typeof dom.calcPanel.focus === 'function') {
+              dom.calcPanel.focus();
+            }
+          }, 20);
+        }
+      }
+
+      function closeCalcModal() {
+        if (dom.calcPanel) dom.calcPanel.classList.remove('is-open');
+        if (dom.calcBackdrop) dom.calcBackdrop.classList.remove('is-open');
+      }
+
+      /* ========================================================================
+         9. SETTINGS MODAL, 9 LANGUAGES (RTL/LTR) & BACKGROUND IMAGE STAGING
+         ======================================================================== */
+      function setSettingsStatus(msg) {
+        if (dom.settingsStatus) {
+          dom.settingsStatus.textContent = msg || '';
+        }
+      }
+
+      function applyLanguage(langCode) {
+        var code = I18N[langCode] ? langCode : 'en';
+        state.lang = code;
+        safeSetStorage(STORAGE_KEYS.LANG, code);
+
+        var isRtl = Boolean(RTL_LANGS[code]);
+        document.documentElement.setAttribute('lang', code);
+        document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+        if (dom.langSelect) {
+          dom.langSelect.value = code;
+        }
+
+        var t = I18N[code];
+        if (dom.appTitle) dom.appTitle.textContent = t.title;
+        if (dom.aedInputLabel) dom.aedInputLabel.textContent = t.aedLabel;
+        if (dom.refundLabel) dom.refundLabel.textContent = t.refundLabel;
+        if (dom.refundFormulaNote) dom.refundFormulaNote.textContent = t.refundFormula;
+        if (dom.openCalcLabel) dom.openCalcLabel.textContent = t.calcBtn;
+        if (dom.esaadLabel) dom.esaadLabel.textContent = 'Esaad / Fazaa';
+        if (dom.threeMnthLabel) dom.threeMnthLabel.textContent = '3 mnth';
+        if (dom.sixMnthLabel) dom.sixMnthLabel.textContent = '6 mnth';
+        if (dom.nineMnthLabel) dom.nineMnthLabel.textContent = '9 mnth';
+        if (dom.twelveMnthLabel) dom.twelveMnthLabel.textContent = '12 mnth';
+        if (dom.fourMnthLabel) dom.fourMnthLabel.textContent = '4 mnth';
+        if (dom.eightMnthLabel) dom.eightMnthLabel.textContent = '8 mnth';
+        if (dom.calcModalTitle) dom.calcModalTitle.textContent = t.calcTitle;
+        if (dom.applyCalcToAedBtn) dom.applyCalcToAedBtn.textContent = t.applyToAed;
+        if (dom.closeCalcFooterBtn) dom.closeCalcFooterBtn.textContent = t.close;
+        if (dom.settingsModalTitle) dom.settingsModalTitle.textContent = t.settingsTitle;
+        if (dom.langLabel) dom.langLabel.textContent = t.langLabel;
+        if (dom.bgSectionLabel) dom.bgSectionLabel.textContent = t.bgLabel;
+        if (dom.chooseBgLabel) dom.chooseBgLabel.textContent = t.chooseBg;
+        if (dom.saveBgBtn) dom.saveBgBtn.textContent = t.save;
+        if (dom.removeBgBtn) dom.removeBgBtn.textContent = t.remove;
+        if (dom.cancelBgBtn) dom.cancelBgBtn.textContent = t.cancel;
+        if (dom.ratesTableTitle) dom.ratesTableTitle.textContent = t.ratesTitle;
+        if (dom.refreshRatesNowBtn) dom.refreshRatesNowBtn.textContent = t.refresh;
+        if (dom.inquiryLogTitle) dom.inquiryLogTitle.textContent = t.inquiryLog;
+        if (dom.exportXlsBtn) dom.exportXlsBtn.textContent = t.exportXls;
+        if (dom.clearLogsBtn) dom.clearLogsBtn.textContent = t.clear;
+
+        updateRateStatusPill();
+        renderBgStagePreview();
+      }
+
+      function applyHasBgClass(enabled) {
+        var targets = [dom.body, dom.appShell, dom.appCard];
+        for (var i = 0; i < targets.length; i += 1) {
+          if (targets[i]) {
+            targets[i].classList.toggle('has-bg', Boolean(enabled));
+          }
+        }
+      }
+
+      function applySavedBackgroundToShell() {
+        if (state.savedBgDataUrl) {
+          var cssUrl = 'url("' + state.savedBgDataUrl + '")';
+          document.documentElement.style.setProperty('--custom-bg-image', cssUrl);
+          if (dom.appShell) dom.appShell.style.setProperty('--custom-bg-image', cssUrl);
+          if (dom.appCard) dom.appCard.style.setProperty('--custom-bg-image', cssUrl);
+          applyHasBgClass(true);
+        } else {
+          document.documentElement.style.setProperty('--custom-bg-image', 'none');
+          if (dom.appShell) dom.appShell.style.setProperty('--custom-bg-image', 'none');
+          if (dom.appCard) dom.appCard.style.setProperty('--custom-bg-image', 'none');
+          applyHasBgClass(false);
+        }
+      }
+
+      function loadSavedBackground() {
+        var saved = safeGetStorage(STORAGE_KEYS.BG) || safeGetStorage(STORAGE_KEYS.LEGACY_BG);
+        if (saved && saved.indexOf('data:image/') === 0) {
+          state.savedBgDataUrl = saved;
+          safeSetStorage(STORAGE_KEYS.BG, saved);
+        } else {
+          state.savedBgDataUrl = '';
+        }
+        state.stagedBgDataUrl = state.savedBgDataUrl;
+        state.stagedBgDirty = false;
+        applySavedBackgroundToShell();
+        renderBgStagePreview();
+      }
+
+      function renderBgStagePreview() {
+        if (!dom.bgStagePreview) return;
+        var t = I18N[state.lang] || I18N.en;
+        var imgUrl = state.stagedBgDirty ? state.stagedBgDataUrl : state.savedBgDataUrl;
+        if (imgUrl) {
+          dom.bgStagePreview.style.backgroundImage = 'url("' + imgUrl + '")';
+          dom.bgStagePreview.textContent = state.stagedBgDirty ? t.bgStaged : '';
+        } else {
+          dom.bgStagePreview.style.backgroundImage = 'none';
+          dom.bgStagePreview.textContent = t.bgEmpty;
+        }
+      }
+
+      function compressImageFile(file, maxDim, quality) {
+        return new Promise(function (resolve, reject) {
+          var reader = new FileReader();
+          reader.onerror = function () { reject(new Error('File read error')); };
+          reader.onload = function (ev) {
+            var img = new Image();
+            img.onerror = function () { reject(new Error('Image decode error')); };
+            img.onload = function () {
+              var w = img.naturalWidth || img.width;
+              var h = img.naturalHeight || img.height;
+              if (!w || !h) {
+                reject(new Error('Invalid dimensions'));
+                return;
+              }
+              var ratio = Math.min(1, maxDim / Math.max(w, h));
+              var targetW = Math.max(1, Math.round(w * ratio));
+              var targetH = Math.max(1, Math.round(h * ratio));
+
+              var canvas = document.createElement('canvas');
+              canvas.width = targetW;
+              canvas.height = targetH;
+              var ctx = canvas.getContext('2d');
+              if (!ctx) {
+                reject(new Error('Canvas context unavailable'));
+                return;
+              }
+              ctx.drawImage(img, 0, 0, targetW, targetH);
+              try {
+                var dataUrl = canvas.toDataURL('image/jpeg', quality);
+                resolve(dataUrl);
+              } catch (err) {
+                reject(err);
+              }
+            };
+            img.src = ev.target.result;
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      function handleBgFileChosen(file) {
+        if (!file) return;
+        compressImageFile(file, 1280, 0.82)
+          .then(function (compressedUrl) {
+            state.stagedBgDataUrl = compressedUrl;
+            state.stagedBgDirty = true;
+            renderBgStagePreview();
+            setSettingsStatus('Image compressed (max 1280px, JPEG 0.82). Tap Save to apply.');
+          })
+          .catch(function () {
+            setSettingsStatus('Could not process selected image.');
+          });
+      }
+
+      function saveStagedBackground() {
+        if (!state.stagedBgDirty && !state.stagedBgDataUrl) {
+          setSettingsStatus('No changes to save.');
+          return;
+        }
+        state.savedBgDataUrl = state.stagedBgDataUrl || '';
+        state.stagedBgDirty = false;
+        if (state.savedBgDataUrl) {
+          var ok = safeSetStorage(STORAGE_KEYS.BG, state.savedBgDataUrl);
+          if (!ok) {
+            setSettingsStatus('Applied for session (storage quota reached).');
+          } else {
+            setSettingsStatus('Background saved.');
+          }
+        } else {
+          safeRemoveStorage(STORAGE_KEYS.BG);
+          safeRemoveStorage(STORAGE_KEYS.LEGACY_BG);
+          setSettingsStatus('Background removed.');
+        }
+        applySavedBackgroundToShell();
+        renderBgStagePreview();
+      }
+
+      function removeBackground() {
+        state.stagedBgDataUrl = '';
+        state.stagedBgDirty = true;
+        state.savedBgDataUrl = '';
+        safeRemoveStorage(STORAGE_KEYS.BG);
+        safeRemoveStorage(STORAGE_KEYS.LEGACY_BG);
+        applySavedBackgroundToShell();
+        renderBgStagePreview();
+        setSettingsStatus('Background removed.');
+      }
+
+      function cancelStagedBackground() {
+        state.stagedBgDataUrl = state.savedBgDataUrl;
+        state.stagedBgDirty = false;
+        if (dom.bgFileInput) dom.bgFileInput.value = '';
+        renderBgStagePreview();
+        setSettingsStatus('Staged changes cancelled.');
+      }
+
+      function openSettingsModal() {
+        closeCalcModal();
+        state.stagedBgDataUrl = state.savedBgDataUrl;
+        state.stagedBgDirty = false;
+        renderBgStagePreview();
+        renderRatesTableDom();
+        renderInquiryLogsDom();
+        setSettingsStatus('');
+
+        if (dom.settingsBackdrop) dom.settingsBackdrop.classList.add('is-open');
+        if (dom.settingsPanel) {
+          dom.settingsPanel.classList.add('is-open');
+          setTimeout(function () {
+            if (dom.settingsPanel && typeof dom.settingsPanel.focus === 'function') {
+              dom.settingsPanel.focus();
+            }
+          }, 20);
+        }
+      }
+
+      function closeSettingsModal() {
+        state.stagedBgDataUrl = state.savedBgDataUrl;
+        state.stagedBgDirty = false;
+        if (dom.settingsPanel) dom.settingsPanel.classList.remove('is-open');
+        if (dom.settingsBackdrop) dom.settingsBackdrop.classList.remove('is-open');
+      }
+
+      /* ========================================================================
+         10. EVENT WIRING & IMMEDIATE + DOMContentLoaded INITIALIZATION
+         ======================================================================== */
+      function bindEvents() {
+        if (dom.numpadGrid) {
+          var setKeyPressed = function (btn, pressed) {
+            if (!btn) return;
+            btn.classList.toggle('is-pressed', Boolean(pressed));
+          };
+
+          dom.numpadGrid.addEventListener('pointerdown', function (evt) {
+            var btn = evt.target.closest('.numpad-key');
+            if (btn) setKeyPressed(btn, true);
+          });
+
+          ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (evName) {
+            dom.numpadGrid.addEventListener(evName, function (evt) {
+              var btn = evt.target.closest('.numpad-key');
+              if (btn) {
+                setKeyPressed(btn, false);
+              } else {
+                var activeKeys = dom.numpadGrid.querySelectorAll('.numpad-key.is-pressed');
+                for (var i = 0; i < activeKeys.length; i += 1) {
+                  activeKeys[i].classList.remove('is-pressed');
+                }
+              }
+            });
+          });
+
+          dom.numpadGrid.addEventListener('click', function (evt) {
+            var btn = evt.target.closest('.numpad-key');
+            if (!btn) return;
+            setKeyPressed(btn, false);
+            if (btn.hasAttribute('data-digit')) {
+              pushDigit(btn.getAttribute('data-digit'));
+            } else if (btn.hasAttribute('data-decimal')) {
+              pushDecimal();
+            } else if (btn.hasAttribute('data-backspace')) {
+              popChar();
+            } else if (btn.hasAttribute('data-clear')) {
+              clearAllWithoutSaving();
+            }
+          });
+        }
+
+        if (dom.valueInput) {
+          dom.valueInput.addEventListener('paste', function (evt) {
+            evt.preventDefault();
+            var pasted = (evt.clipboardData || window.clipboardData)
+              ? (evt.clipboardData || window.clipboardData).getData('text')
+              : '';
+            state.inputRaw = sanitizeRawInput(pasted);
+            updateConversions();
+            scheduleAutoLog();
+          });
+        }
+
+        if (dom.openCalcBtn) {
+          dom.openCalcBtn.addEventListener('click', function (evt) {
+            evt.preventDefault();
+            openCalcModal();
+          });
+        }
+
+        if (dom.calcKeys) {
+          dom.calcKeys.addEventListener('click', function (evt) {
+            var btn = evt.target.closest('.calc-key');
+            if (!btn) return;
+            if (btn.hasAttribute('data-calc-digit')) {
+              calcInputDigit(btn.getAttribute('data-calc-digit'));
+            } else if (btn.hasAttribute('data-calc-decimal')) {
+              calcInputDecimal();
+            } else if (btn.hasAttribute('data-calc-op')) {
+              calcSelectOperator(btn.getAttribute('data-calc-op'));
+            } else if (btn.hasAttribute('data-calc-action')) {
+              var act = btn.getAttribute('data-calc-action');
+              if (act === 'equals') calcEquals();
+              else if (act === 'percent') calcPercent();
+              else if (act === 'backspace') calcBackspace();
+              else if (act === 'ce') calcClearEntry();
+              else if (act === 'clear') resetCalcState();
+            }
+          });
+        }
+
+        if (dom.applyCalcToAedBtn) {
+          dom.applyCalcToAedBtn.addEventListener('click', applyCalcValueToAed);
+        }
+        if (dom.closeCalcBtn) {
+          dom.closeCalcBtn.addEventListener('click', closeCalcModal);
+        }
+        if (dom.closeCalcFooterBtn) {
+          dom.closeCalcFooterBtn.addEventListener('click', closeCalcModal);
+        }
+        if (dom.calcBackdrop) {
+          dom.calcBackdrop.addEventListener('click', closeCalcModal);
+        }
+
+        if (dom.openSettingsBtn) {
+          dom.openSettingsBtn.addEventListener('click', openSettingsModal);
+        }
+        if (dom.closeSettingsBtn) {
+          dom.closeSettingsBtn.addEventListener('click', closeSettingsModal);
+        }
+        if (dom.settingsBackdrop) {
+          dom.settingsBackdrop.addEventListener('click', closeSettingsModal);
+        }
+
+        if (dom.langSelect) {
+          dom.langSelect.addEventListener('change', function () {
+            applyLanguage(dom.langSelect.value);
+          });
+        }
+
+        if (dom.bgFileInput) {
+          dom.bgFileInput.addEventListener('change', function () {
+            var file = dom.bgFileInput.files && dom.bgFileInput.files[0];
+            if (file) {
+              handleBgFileChosen(file);
+            }
+          });
+        }
+
+        if (dom.saveBgBtn) dom.saveBgBtn.addEventListener('click', saveStagedBackground);
+        if (dom.removeBgBtn) dom.removeBgBtn.addEventListener('click', removeBackground);
+        if (dom.cancelBgBtn) dom.cancelBgBtn.addEventListener('click', cancelStagedBackground);
+
+        if (dom.refreshRatesNowBtn) {
+          dom.refreshRatesNowBtn.addEventListener('click', function () {
+            refreshExchangeRates();
+            renderRatesTableDom();
+            setSettingsStatus('Refreshing live rates...');
+          });
+        }
+
+        if (dom.exportXlsBtn) {
+          dom.exportXlsBtn.addEventListener('click', exportInquiriesToXls);
+        }
+
+        if (dom.clearLogsBtn) {
+          dom.clearLogsBtn.addEventListener('click', function () {
+            state.inquiryLogs = [];
+            state.lastLoggedSignature = '';
+            saveInquiryLogs();
+            renderInquiryLogsDom();
+            setSettingsStatus('Inquiry log cleared.');
+          });
+        }
+
+        document.addEventListener('keydown', function (evt) {
+          if (evt.key === 'Escape') {
+            if (dom.calcPanel && dom.calcPanel.classList.contains('is-open')) {
+              closeCalcModal();
+              return;
+            }
+            if (dom.settingsPanel && dom.settingsPanel.classList.contains('is-open')) {
+              closeSettingsModal();
+              return;
+            }
+          }
+
+          var isCalcOpen = dom.calcPanel && dom.calcPanel.classList.contains('is-open');
+          var isSettingsOpen = dom.settingsPanel && dom.settingsPanel.classList.contains('is-open');
+          if (isCalcOpen || isSettingsOpen) return;
+
+          if (/^[0-9]$/.test(evt.key)) {
+            pushDigit(evt.key);
+          } else if (evt.key === '.') {
+            pushDecimal();
+          } else if (evt.key === 'Backspace') {
+            popChar();
+          } else if (evt.key === 'Enter') {
+            if (state.logTimerId) {
+              clearTimeout(state.logTimerId);
+              state.logTimerId = null;
+            }
+            recordInquiryIfNonZero();
+          } else if (evt.key === 'c' || evt.key === 'C') {
+            clearAllWithoutSaving();
+          }
+        });
+      }
+
+      var appInitialized = false;
+      var rateTimerStarted = false;
+
+      function initApp() {
+        if (appInitialized) return;
+        appInitialized = true;
+
+        bindDom();
+        renderCurrencyGridDom();
+
+        var savedLang = safeGetStorage(STORAGE_KEYS.LANG) || 'en';
+        applyLanguage(savedLang);
+
+        loadCachedRates();
+        loadSavedBackground();
+        loadInquiryLogs();
+
+        bindEvents();
+        updateConversions();
+        renderRatesTableDom();
+        renderInquiryLogsDom();
+        resetCalcState();
+
+        if (!rateTimerStarted) {
+          rateTimerStarted = true;
+          refreshExchangeRates();
+          setInterval(refreshExchangeRates, 5000);
+        }
+      }
+
+      initApp();
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initApp);
+      }
+    })();
+  </script>
+</body>
+</html>
